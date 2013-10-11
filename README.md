@@ -1,2 +1,2 @@
-doc.ruby-lang.org
+docs.ruby-lang.org
 =================
