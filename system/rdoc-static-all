@@ -10,6 +10,8 @@ VERSIONS = %w[
 DOC_ROOT = "en"
 
 def create_document(version)
+  system("rake", "update:#{version}")
+  system("rake", "rdoc:clobber_en/#{version}")
   system("rake", "rdoc:en/#{version}")
   `rm -rf #{DOC_ROOT}/#{version}`
   `mv #{version} #{DOC_ROOT}`
