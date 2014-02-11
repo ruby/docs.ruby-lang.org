@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-BITCLUST_BASE = "/home/okkez/ruby/bitclust"
+BITCLUST_BASE = "/var/rubydoc/bitclust"
 BITCLUST = "#{BITCLUST_BASE}/bin/bitclust"
 BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
 
@@ -12,7 +12,7 @@ VERSIONS = %w[
 ]
 
 RUBY = "ruby"
-DOC_BASE = "/home/okkez/ruby/rubydoc"
+DOC_BASE = "/var/rubydoc/doctree"
 REF_BASE = "#{DOC_BASE}/refm"
 
 def setup_db(version)
@@ -24,6 +24,14 @@ def setup_db(version)
   puts "#{version} is done"
 end
 
+if !File.directory?(BITCLUST_BASE)
+  `git clone https://github.com/rurema/bitclust.git #{BITCLUST_BASE}`
+end
+
+if !File.directory?(DOC_BASE)
+  `git clone https://github.com/rurema/doctree.git #{DOC_BASE}`
+end
+
 Dir.chdir(DOC_BASE) do
   system "git pull --rebase"
 end
@@ -31,4 +39,3 @@ end
 VERSIONS.reverse_each do |version|
   setup_db(version)
 end
-
