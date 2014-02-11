@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+VERSIONS = %w[
+  1.8.7
+  1.9.3
+  2.0.0
+  2.1.0
+]
+
+RUBY_BIN="ruby"
+COMMAND="/home/okkez/ruby/bitclust/bin/bitclust"
+DOC_BASE = "/var/www/doc.ruby-lang.org/ja"
+DB_BASE = "/home/okkez/ruby/rubydoc/refm"
+BITCLUST_LIB_DIR ="/home/okkez/ruby/bitclust/lib"
+BITCLUST_DATA="/home/okkez/ruby/bitclust/data/bitclust"
+TEMPLATE="#{BITCLUST_DATA}/template.offline"
+CATALOG="#{BITCLUST_DATA}/catalog"
+
+def create_document(version)
+  dir = version.gsub('.', '')
+  system(RUBY_BIN, "-I#{BITCLUST_LIB_DIR}",
+         COMMAND,
+         "--database=#{DB_BASE}/db-#{version}",
+         "statichtml",
+         "--outputdir=/home/okkez/tmp/#{version}",
+         "--templatedir=#{TEMPLATE}",
+         "--catalog=#{CATALOG}",
+         "--fs-casesensitive",
+         "--quiet")
+  `rm -rf #{DOC_BASE}/#{version} `
+  `mv /home/okkez/tmp/#{version} #{DOC_BASE}`
+  puts "#{version} is done."
+end
+
+VERSIONS.reverse_each do |version|
+  create_document(version)
+end
+

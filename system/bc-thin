@@ -1,0 +1,8 @@
+#! /bin/sh
+BITCLUST_DIR=$HOME/ruby/bitclust
+#THIN=/home/okkez/.gem/ruby/1.9.1/
+
+command=$1
+
+cd $BITCLUST_DIR
+thin -R $BITCLUST_DIR/doc.okkez.net.ru -C doc.okkez.net.yml $command

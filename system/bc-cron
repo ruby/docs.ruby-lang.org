@@ -1,0 +1,26 @@
+#! /bin/zsh
+
+HOME=/home/okkez
+DOC_BASE=$HOME/ruby/data
+MAINTENANCE_FILE=system/maintenance.html
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+rbenv shell 2.0.0-p247
+rbenv version
+
+ruby -v
+ruby $HOME/bin/bc-setup-all
+ruby $HOME/bin/bc-static-all
+
+RUREMA_BASE=$HOME/ruby/rurema-search
+
+mv $RUREMA_BASE/public/$MAINTENANCE_FILE.no \
+   $RUREMA_BASE/public/$MAINTENANCE_FILE
+
+$HOME/bin/update-rurema-index
+$HOME/bin/rurema-search-unicorn restart
+
+mv $RUREMA_BASE/public/$MAINTENANCE_FILE \
+   $RUREMA_BASE/public/$MAINTENANCE_FILE.no
+
