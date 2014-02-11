@@ -7,27 +7,31 @@ VERSIONS = %w[
   2.1.0
 ]
 
-RUBY_BIN="ruby"
-COMMAND="/home/okkez/ruby/bitclust/bin/bitclust"
-DOC_BASE = "/var/www/docs.ruby-lang.org/ja"
-DB_BASE = "/home/okkez/ruby/rubydoc/refm"
-BITCLUST_LIB_DIR ="/home/okkez/ruby/bitclust/lib"
-BITCLUST_DATA="/home/okkez/ruby/bitclust/data/bitclust"
+RUBY = "ruby"
+
+BITCLUST_BASE = "/var/rubydoc/bitclust"
+BITCLUST = "#{BITCLUST_BASE}/bin/bitclust"
+BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
+BITCLUST_DATA = "#{BITCLUST_BASE}/data/bitclust"
 TEMPLATE="#{BITCLUST_DATA}/template.offline"
 CATALOG="#{BITCLUST_DATA}/catalog"
 
+REF_BASE = "/var/rubydoc/doctree/refm"
+
+DOC_ROOT = "/var/www/docs.ruby-lang.org/ja"
+
 def create_document(version)
-  system(RUBY_BIN, "-I#{BITCLUST_LIB_DIR}",
-         COMMAND,
-         "--database=#{DB_BASE}/db-#{version}",
+  system(RUBY, "-I#{BITCLUST_LIB_DIR}",
+         BITCLUST,
+         "--database=#{REF_BASE}/db-#{version}",
          "statichtml",
-         "--outputdir=/home/okkez/tmp/#{version}",
+         "--outputdir=/var/rubydoc/tmp/#{version}",
          "--templatedir=#{TEMPLATE}",
          "--catalog=#{CATALOG}",
          "--fs-casesensitive",
          "--quiet")
-  `rm -rf #{DOC_BASE}/#{version} `
-  `mv /home/okkez/tmp/#{version} #{DOC_BASE}`
+  `rm -rf #{DOC_ROOT}/#{version}`
+  `mv /var/rubydoc/tmp/#{version} #{DOC_ROOT}`
   puts "#{version} is done."
 end
 

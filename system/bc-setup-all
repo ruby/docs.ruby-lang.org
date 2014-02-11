@@ -1,9 +1,5 @@
 #!/usr/bin/env ruby
 
-BITCLUST_BASE = "/var/rubydoc/bitclust"
-BITCLUST = "#{BITCLUST_BASE}/bin/bitclust"
-BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
-
 VERSIONS = %w[
   1.8.7 
   1.9.3
@@ -12,6 +8,11 @@ VERSIONS = %w[
 ]
 
 RUBY = "ruby"
+
+BITCLUST_BASE = "/var/rubydoc/bitclust"
+BITCLUST = "#{BITCLUST_BASE}/bin/bitclust"
+BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
+
 DOC_BASE = "/var/rubydoc/doctree"
 REF_BASE = "#{DOC_BASE}/refm"
 
