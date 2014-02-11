@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+VERSIONS = %w[
+  1.8.7
+  1.9.3
+  2.0.0
+  2.1.0
+]
+
+DOC_ROOT = "en"
+
+def create_document(version)
+  system("rake", "rdoc:en/#{version}")
+  `rm -rf #{DOC_ROOT}/#{version}`
+  `mv #{version} #{DOC_ROOT}`
+  puts "#{version} is done."
+end
+
+VERSIONS.reverse_each do |version|
+  create_document(version)
+end
