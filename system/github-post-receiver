@@ -1,0 +1,24 @@
+#! /bin/zsh
+BASE_DIR=/home/okkez/ruby/git-utils/github-post-receiver
+export RACK_ENV=production
+cd  $BASE_DIR
+rbenv version
+
+command=$1
+
+function start() {
+  mkdir -p $BASE_DIR/tmp/pids
+  mkdir -p $BASE_DIR/log
+  bundle exec unicorn -D -c unicorn.conf config.ru
+}
+
+function stop() {
+  kill $(cat $BASE_DIR/tmp/pids/unicorn.pid)
+}
+
+function restart() {
+  kill -USR2 $(cat $BASE_DIR/tmp/pids/unicorn.pid)
+}
+
+$command
+

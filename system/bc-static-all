@@ -9,7 +9,7 @@ VERSIONS = %w[
 
 RUBY_BIN="ruby"
 COMMAND="/home/okkez/ruby/bitclust/bin/bitclust"
-DOC_BASE = "/var/www/doc.ruby-lang.org/ja"
+DOC_BASE = "/var/www/docs.ruby-lang.org/ja"
 DB_BASE = "/home/okkez/ruby/rubydoc/refm"
 BITCLUST_LIB_DIR ="/home/okkez/ruby/bitclust/lib"
 BITCLUST_DATA="/home/okkez/ruby/bitclust/data/bitclust"

@@ -1,0 +1,16 @@
+#! /bin/sh
+BASE_DIR=/home/okkez/ruby
+# RROONGA_DIR=$BASE_DIR/rroonga
+APP_DIR=/srv/www/rurema-search
+DOC_BASE=$BASE_DIR/rubydoc/refm
+BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
+# RACKNGA_LIB_DIR=$BASE_DIR/racknga/lib
+
+rm -rf ${APP_DIR}/groonga-database
+mkdir -p ${APP_DIR}/groonga-database
+/home/okkez/bin/ruby-192 \
+        -I${BITCLUST_LIB_DIR} \
+        ${APP_DIR}/bin/bitclust-indexer --reset \
+        ${DOC_BASE}/db-*
+sudo chown -R okkez:www-data ${APP_DIR}/groonga-database
+sudo chmod -R g+w ${APP_DIR}/groonga-database 

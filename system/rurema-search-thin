@@ -1,0 +1,9 @@
+#! /bin/sh
+
+RUBY_BASE=/home/okkez/all-ruby/ruby-1.9.2-p136
+RUBY=$RUBY_BASE/bin/ruby
+THIN=$RUBY_BASE/bin/thin
+cd /home/okkez/ruby/rurema-search
+
+sudo ${RUBY} ${THIN} -R ruby-lang.org.ru -C thin_cluster.conf $1
+

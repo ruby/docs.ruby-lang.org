@@ -1,0 +1,27 @@
+#! /bin/zsh
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+RUBY=/home/okkez/.rvm/rubies/ruby-1.9.3-p392/bin/ruby
+BASE_DIR=/home/okkez/ruby/rurema-search
+cd  $BASE_DIR
+# do not work in production mode
+#export RACK_ENV=production
+rbenv version
+
+command=$1
+
+function start() {
+  bundle exec unicorn -D -c unicorn.conf ruby-lang.org.ru
+}
+
+function stop() {
+  kill $(cat $BASE_DIR/tmp/pids/unicorn.pid)
+}
+
+function restart() {
+  stop
+  start
+}
+
+$command
+
