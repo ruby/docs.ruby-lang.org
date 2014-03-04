@@ -1,23 +1,23 @@
 #! /bin/zsh
-if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi
-BASE_DIR=/home/okkez/ruby
-RUBY=ruby
+BASE_DIR=/var/rubydoc
 APP_DIR=$BASE_DIR/rurema-search
-RROONGA_DIR=$APP_DIR/vendor/bundle/ruby/1.9.1/gems/rroonga-1.3.1
+
+RUBY=~rurema/.rbenv/versions/2.1.0/bin/ruby
 DOC_BASE=$BASE_DIR/rubydoc/refm
 BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
-#RACKNGA_LIB_DIR=$BASE_DIR/racknga/lib
 
 rm -rf ${APP_DIR}/groonga-database
 mkdir -p ${APP_DIR}/groonga-database
+
 cd ${APP_DIR}
 rbenv version
 bundle exec $RUBY -I${BITCLUST_LIB_DIR} \
       ${APP_DIR}/bin/bitclust-indexer \
       ${DOC_BASE}/db-*
-sudo chown -R okkez:www-data ${APP_DIR}/groonga-database
-sudo chmod -R g+w ${APP_DIR}/groonga-database 
-sudo chown -R okkez:www-data ${APP_DIR}/var/lib/suggest
-sudo chmod -R g+w ${APP_DIR}/var/lib/suggest
-sudo rm -rf $APP_DIR/var/cache/db* || true
 
+sudo chown -R rurema:www-data ${APP_DIR}/groonga-database
+sudo chmod -R g+w ${APP_DIR}/groonga-database 
+sudo chown -R rurema:www-data ${APP_DIR}/var/lib/suggest
+sudo chmod -R g+w ${APP_DIR}/var/lib/suggest
+
+sudo rm -rf $APP_DIR/var/cache/db* || true
