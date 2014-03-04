@@ -3,7 +3,7 @@ BASE_DIR=/var/rubydoc
 APP_DIR=$BASE_DIR/rurema-search
 
 RUBY=~rurema/.rbenv/versions/2.1.0/bin/ruby
-DOC_BASE=$BASE_DIR/rubydoc/refm
+DOC_BASE=$BASE_DIR/doctree/refm
 BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 
 rm -rf ${APP_DIR}/groonga-database
@@ -15,9 +15,9 @@ bundle exec $RUBY -I${BITCLUST_LIB_DIR} \
       ${APP_DIR}/bin/bitclust-indexer \
       ${DOC_BASE}/db-*
 
-sudo chown -R rurema:www-data ${APP_DIR}/groonga-database
-sudo chmod -R g+w ${APP_DIR}/groonga-database 
-sudo chown -R rurema:www-data ${APP_DIR}/var/lib/suggest
-sudo chmod -R g+w ${APP_DIR}/var/lib/suggest
+chown -R rurema:www-data ${APP_DIR}/groonga-database
+chmod -R g+w ${APP_DIR}/groonga-database
+chown -R rurema:www-data ${APP_DIR}/var/lib/suggest
+chmod -R g+w ${APP_DIR}/var/lib/suggest
 
-sudo rm -rf $APP_DIR/var/cache/db* || true
+rm -rf $APP_DIR/var/cache/db* || true
