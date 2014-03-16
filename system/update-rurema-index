@@ -11,13 +11,10 @@ mkdir -p ${APP_DIR}/groonga-database
 
 cd ${APP_DIR}
 rbenv version
-bundle exec $RUBY -I${BITCLUST_LIB_DIR} \
-      ${APP_DIR}/bin/bitclust-indexer \
-      ${DOC_BASE}/db-*
+bundle exec $RUBY -I${BITCLUST_LIB_DIR} ${APP_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
 
-chown -R rurema:www-data ${APP_DIR}/groonga-database
+chown -R rurema:rurema ${APP_DIR}/groonga-database
 chmod -R g+w ${APP_DIR}/groonga-database
-chown -R rurema:www-data ${APP_DIR}/var/lib/suggest
-chmod -R g+w ${APP_DIR}/var/lib/suggest
 
-rm -rf $APP_DIR/var/cache/db* || true
+chown -R rurema:rurema ${APP_DIR}/var/lib/suggest
+chmod -R g+w ${APP_DIR}/var/lib/suggest
