@@ -2,7 +2,7 @@
 BASE_DIR=/var/rubydoc
 APP_DIR=$BASE_DIR/rurema-search
 
-RUBY=~rurema/.rbenv/versions/2.1.0/bin/ruby
+RUBY=~rurema/.rbenv/shims/ruby
 DOC_BASE=$BASE_DIR/doctree/refm
 BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 
