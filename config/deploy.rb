@@ -26,7 +26,7 @@ set :deploy_to, '/var/www/docs.ruby-lang.org'
 # set :linked_files, %w{config/database.yml}
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w{en/1.8.7 en/1.9.3 en/2.0.0 en/2.1.0 en/trunk ja/1.8.7 ja/1.9.3 ja/2.0.0 ja/2.1.0}
+set :linked_dirs, %w{sources en/1.8.7 en/1.9.3 en/2.0.0 en/2.1.0 en/trunk ja/1.8.7 ja/1.9.3 ja/2.0.0 ja/2.1.0}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
