@@ -7,7 +7,7 @@ VERSIONS = %w[
   2.1.0
 ]
 
-DOC_ROOT = "en"
+DOC_ROOT = "shared/en"
 
 def create_document(version)
   system("rake", "update:#{version}")
