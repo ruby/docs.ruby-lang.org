@@ -1,20 +1,17 @@
 #! /bin/zsh
 BASE_DIR=/var/rubydoc
 APP_DIR=$BASE_DIR/rurema-search
+CURRENT_DIR=$APP_DIR/current
+SHARED_DIR=$APP_DIR/shared
 
 RUBY=~rurema/.rbenv/shims/ruby
 BUNDLE=~rurema/.rbenv/shims/bundle
 DOC_BASE=$BASE_DIR/doctree/refm
 BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 
-rm -rf ${APP_DIR}/groonga-database
-mkdir -p ${APP_DIR}/groonga-database
+rm -rf ${SHARED_DIR}/groonga-database/*
 
-cd ${APP_DIR}
-$BUNDLE exec $RUBY -I${BITCLUST_LIB_DIR} ${APP_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
+cd ${CURRENT_DIR}
+$BUNDLE exec $RUBY -I${BITCLUST_LIB_DIR} ${CURRENT_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
 
-chown -R rurema:rurema ${APP_DIR}/groonga-database
-chmod -R g+w ${APP_DIR}/groonga-database
-
-chown -R rurema:rurema ${APP_DIR}/var/lib/suggest
-chmod -R g+w ${APP_DIR}/var/lib/suggest
+touch ${CURRENT_DIR}/tmp/restart.txt
