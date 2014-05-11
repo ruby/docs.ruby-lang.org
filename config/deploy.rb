@@ -1,4 +1,4 @@
-lock '3.1.0'
+lock '3.2.1'
 
 set :application, 'docs.ruby-lang.org'
 set :repo_url, 'git@github.com:ruby/docs.ruby-lang.org.git'
