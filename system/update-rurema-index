@@ -9,8 +9,6 @@ BUNDLE=~rurema/.rbenv/shims/bundle
 DOC_BASE=$BASE_DIR/doctree/refm
 BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 
-rm -rf ${SHARED_DIR}/groonga-database/*
-
 cd ${CURRENT_DIR}
 $BUNDLE exec $RUBY -I${BITCLUST_LIB_DIR} ${CURRENT_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
 
