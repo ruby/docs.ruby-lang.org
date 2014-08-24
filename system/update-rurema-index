@@ -11,5 +11,3 @@ BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 
 cd ${CURRENT_DIR}
 $BUNDLE exec $RUBY -I${BITCLUST_LIB_DIR} ${CURRENT_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
-
-touch ${CURRENT_DIR}/tmp/restart.txt
