@@ -2,6 +2,7 @@ require 'rdoc/task'
 
 versions = {
   "trunk" => "trunk",
+  "2.2.0" => "ruby_2_2",
   "2.1.0" => "ruby_2_1",
   "2.0.0" => "ruby_2_0_0",
   "1.9.3" => "ruby_1_9_3",
