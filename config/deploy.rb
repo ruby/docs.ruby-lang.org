@@ -1,5 +1,3 @@
-lock '3.2.1'
-
 set :application, 'docs.ruby-lang.org'
 set :repo_url, 'git@github.com:ruby/docs.ruby-lang.org.git'
 set :deploy_to, '/var/www/docs.ruby-lang.org'
