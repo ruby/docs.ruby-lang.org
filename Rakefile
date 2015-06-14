@@ -5,8 +5,6 @@ versions = {
   "2.2.0" => "ruby_2_2",
   "2.1.0" => "ruby_2_1",
   "2.0.0" => "ruby_2_0_0",
-  "1.9.3" => "ruby_1_9_3",
-  "1.8.7" => "ruby_1_8_7",
 }
 
 versions.each do |version, branch_name|
@@ -51,4 +49,3 @@ task "update" => versions.keys.map { |version| "update:#{version}" }
 
 desc "Build RDoc HTML files for all versions"
 task "rdoc" => versions.keys.map { |version| "rdoc:#{version}" }
-
