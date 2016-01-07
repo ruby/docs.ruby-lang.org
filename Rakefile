@@ -21,7 +21,8 @@ versions.each do |version, branch_name|
   desc "Updates source for #{version}"
   task "update:#{version}" => source_dir do
     Dir.chdir source_dir do
-      sh "git pull origin #{branch_name}"
+      sh "git fetch origin"
+      sh "git reset origin/#{branch_name} --hard"
     end
   end
 
