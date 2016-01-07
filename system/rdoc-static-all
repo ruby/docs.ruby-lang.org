@@ -5,6 +5,7 @@ VERSIONS = %w[
   2.1.0
   2.2.0
   2.3.0
+  trunk
 ]
 
 DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/en"
