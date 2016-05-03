@@ -5,4 +5,4 @@ set :linked_dirs, %w{sources en/1.8.7 en/1.9.3 en/2.0.0 en/2.1.0 en/2.2.0 en/2.3
 
 set :rbenv_type, :user
 set :rbenv_path, '/home/rurema/.rbenv'
-set :rbenv_ruby, '2.3.0'
+set :rbenv_ruby, '2.3.1'
