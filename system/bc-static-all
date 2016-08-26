@@ -28,6 +28,7 @@ def create_document(version)
          "--templatedir=#{TEMPLATE}",
          "--catalog=#{CATALOG}",
          "--fs-casesensitive",
+         "--canonical-base-url=http://docs.ruby-lang.org/ja/latest/",
          "--quiet")
   `rm -rf #{DOC_ROOT}/#{version}`
   `mv /var/rubydoc/tmp/#{version} #{DOC_ROOT}`
@@ -36,4 +37,9 @@ end
 
 VERSIONS.reverse_each do |version|
   create_document(version)
+end
+
+Dir.chdir(DOC_ROOT) do
+  system("unlink", "latest")
+  system("ln", "-s", "-f", VERSIONS.max, "latest")
 end
