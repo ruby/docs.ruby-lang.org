@@ -29,7 +29,7 @@ versions.each do |version, branch_name|
     lang_version = File.join("en", version)
     RDoc::Task.new(lang_version) do |rdoc|
       rdoc.title = "Documentation for Ruby #{version}"
-      rdoc.main = "README"
+      rdoc.main = "README.md"
       rdoc.rdoc_dir = version
       rdoc.rdoc_files << source_dir
       rdoc.options << "-U"
