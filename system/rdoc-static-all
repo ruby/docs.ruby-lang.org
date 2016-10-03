@@ -10,9 +10,9 @@ VERSIONS = %w[
 DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/en"
 
 def create_document(version)
-  system("rake", "update:#{version}")
-  system("rake", "rdoc:clobber_en/#{version}")
-  system("rake", "rdoc:en/#{version}")
+  system("bundle", "exec", "rake", "update:#{version}")
+  system("bundle", "exec", "rake", "rdoc:clobber_en/#{version}")
+  system("bundle", "exec", "rake", "rdoc:en/#{version}")
   `rm -rf #{DOC_ROOT}/#{version}`
   `mv #{version} #{DOC_ROOT}`
   puts "#{version} is done."

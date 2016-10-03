@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/rdoc/rdoc
+  revision: 0227c1bdcf73810d54aaec8238e59f7452f15681
+  ref: 0227c1b
+  specs:
+    rdoc (5.0.0.beta2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -32,6 +39,7 @@ DEPENDENCIES
   capistrano
   capistrano-bundler
   capistrano-rbenv
+  rdoc!
 
 BUNDLED WITH
    1.13.2
