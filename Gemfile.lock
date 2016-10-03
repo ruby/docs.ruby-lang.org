@@ -9,7 +9,7 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (1.1.4)
+    capistrano-bundler (1.2.0)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
     capistrano-harrow (0.5.3)
@@ -20,8 +20,8 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
-    rake (11.2.2)
-    sshkit (1.11.2)
+    rake (11.3.0)
+    sshkit (1.11.3)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
 
@@ -34,4 +34,4 @@ DEPENDENCIES
   capistrano-rbenv
 
 BUNDLED WITH
-   1.13.1
+   1.13.2
