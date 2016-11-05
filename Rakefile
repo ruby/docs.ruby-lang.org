@@ -25,6 +25,14 @@ versions.each do |version, branch_name|
     end
   end
 
+  desc "Compile source for #{version}"
+  task "compile:#{version}" => source_dir do
+    Dir.chdir source_dir do
+      sh "make clean" if File.exists?("Makefile")
+      sh "autoconf && ./configure && make"
+    end
+  end
+
   namespace :rdoc do
     lang_version = File.join("en", version)
     RDoc::Task.new(lang_version) do |rdoc|
@@ -39,7 +47,7 @@ versions.each do |version, branch_name|
       rdoc.options << "--encoding=UTF-8"
     end
   end
-  task "rdoc:#{version}" => "update:#{version}"
+  task "rdoc:#{version}" => ["update:#{version}", "compile:#{version}"]
 end
 
 desc "Checks out sources for all versions"
