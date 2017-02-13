@@ -28,7 +28,7 @@ GEM
     rbnacl-libsodium (1.0.11)
       rbnacl (>= 3.0.1)
     rdoc (5.0.0)
-    sshkit (1.11.5)
+    sshkit (1.12.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
 
@@ -45,4 +45,4 @@ DEPENDENCIES
   rdoc
 
 BUNDLED WITH
-   1.14.3
+   1.14.4
