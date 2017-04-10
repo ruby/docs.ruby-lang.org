@@ -5,7 +5,6 @@ versions = {
   "2.4.0" => "ruby_2_4",
   "2.3.0" => "ruby_2_3",
   "2.2.0" => "ruby_2_2",
-  "2.1.0" => "ruby_2_1",
 }
 
 versions.each do |version, branch_name|
