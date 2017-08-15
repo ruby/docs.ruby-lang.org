@@ -1,4 +1,6 @@
 set :application, 'docs.ruby-lang.org'
 set :repo_url, 'https://github.com/ruby/docs.ruby-lang.org'
 set :deploy_to, '/var/www/docs.ruby-lang.org'
-set :linked_dirs, %w{sources en/1.8.7 en/1.9.3 en/2.0.0 en/2.1.0 en/2.2.0 en/2.3.0 en/2.4.0 en/trunk ja/1.8.7 ja/1.9.3 ja/2.0.0 ja/2.1.0 ja/2.2.0 ja/2.3.0 ja/2.4.0 ja/latest}
+
+versions = %w[1.8.7 1.9.3 2.0.0 2.1.0 2.2.0 2.3.0 2.4.0 trunk]
+set :linked_dirs, ["sources"] + vesrions.map{|v| ["public/en/#{v}", "public/ja/#{v}"]}.flatten

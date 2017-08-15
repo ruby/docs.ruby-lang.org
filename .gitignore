@@ -1,7 +1,6 @@
 /sources/
-/*/1.8.*
-/*/1.9.*
-/*/2.*
-/*/trunk
+/**/1.*
+/**/2.*
+/**/trunk
 .capistrano
 /log
