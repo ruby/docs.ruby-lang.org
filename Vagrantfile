@@ -1,71 +1,55 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
+  config.vm.box = "debian/stretch64"
+  config.vm.provision "shell", inline: <<-SHELL
+    apt update -y
+    apt upgrade -y
+    # for setup
+    apt install -y nginx git bundler apt-transport-https ca-certificates curl lv
+    # for convenience
+    apt install -y lv w3m
 
-  # Every Vagrant development environment requires a box. You can search for
-  # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "base"
+    dpkg -l groonga > /dev/null 2>&1 || (
+      echo "deb https://packages.groonga.org/debian/ stretch main" > /etc/apt/sources.list.d/groonga.list &&
+      apt update -y;
+      apt install -y --allow-unauthenticated groonga-keyring &&
+      apt update -y &&
+      apt install -y -V groonga
+    )
 
-  # Disable automatic box update checking. If you disable this, then
-  # boxes will only be checked for updates when the user runs
-  # `vagrant box outdated`. This is not recommended.
-  # config.vm.box_check_update = false
+    dpkg -l libnginx-mod-http-passenger > /dev/null 2>&1 || (
+     apt install -y dirmngr gnupg &&
+     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7 &&
+     echo "deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main" > /etc/apt/sources.list.d/passenger.list &&
+     apt-get update -y &&
+     apt install -y libnginx-mod-http-passenger
+    )
 
-  # Create a forwarded port mapping which allows access to a specific port
-  # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+    grep rurema /etc/passwd > /dev/null 2>&1 || (
+      useradd -m -s /bin/bash rurema &&
+      usermod -aG sudo rurema &&
+      cp -a /home/vagrant/.ssh /home/rurema/.ssh &&
+      chown -R rurema:rurema /home/rurema/.ssh
+    )
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network "private_network", ip: "192.168.33.10"
+    mkdir -p /var/www/docs.ruby-lang.org /var/rubydoc
+    chown -R rurema:rurema /var/www/docs.ruby-lang.org /var/rubydoc
 
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network "public_network"
+    echo "20 13 * * * cd /var/www/docs.ruby-lang.org/current; ruby system/rdoc-static-all
+15  0 * * * cd /var/www/docs.ruby-lang.org/current; ruby system/bc-setup-all; ruby system/bc-static-all
+15  2 * * * cd /var/www/docs.ruby-lang.org/current; system/update-rurema-index" > /tmp/crontab.rurema
+    crontab -u rurema /tmp/crontab.rurema
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder "../data", "/vagrant_data"
+    ls /var/rubydoc/doctree > /dev/null 2>&1 ||
+      su - rurema -c "sh -c 'cd /var/rubydoc/ && git clone https://github.com/rurema/doctree.git'"
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
+    ls /etc/nginx/sites-available/docs.ruby-lang.org > /dev/null 2>&1 ||
+      curl --silent -o /etc/nginx/sites-available/docs.ruby-lang.org https://raw.githubusercontent.com/ruby/docs.ruby-lang.org/master/conf/docs.ruby-lang.org
+      ln -s ../sites-available/docs.ruby-lang.org /etc/nginx/sites-enabled/docs.ruby-lang.org
+      rm /etc/nginx/sites-enabled/default
 
-  # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
-  # such as FTP and Heroku are also available. See the documentation at
-  # https://docs.vagrantup.com/v2/push/atlas.html for more information.
-  # config.push.define "atlas" do |push|
-  #   push.app = "YOUR_ATLAS_USERNAME/YOUR_APPLICATION_NAME"
-  # end
-
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
+    echo "prepare done: exec cap deploy"
+  SHELL
 end
