@@ -17,7 +17,7 @@ CATALOG="#{BITCLUST_DATA}/catalog"
 
 REF_BASE = "/var/rubydoc/doctree/refm"
 
-DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/ja"
+DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/public/ja"
 
 def create_document(version)
   system(RUBY, "-I#{BITCLUST_LIB_DIR}",
