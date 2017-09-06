@@ -7,7 +7,7 @@ VERSIONS = %w[
   trunk
 ]
 
-DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/en"
+DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/public/en"
 
 def create_document(version)
   system("bundle", "exec", "rake", "update:#{version}")
