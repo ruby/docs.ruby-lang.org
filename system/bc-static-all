@@ -29,6 +29,7 @@ def create_document(version)
          "--catalog=#{CATALOG}",
          "--fs-casesensitive",
          "--canonical-base-url=https://docs.ruby-lang.org/ja/latest/",
+         "--tracking-id=UA-620926-3",
          "--quiet")
   `rm -rf #{DOC_ROOT}/#{version}`
   `mv /var/rubydoc/tmp/#{version} #{DOC_ROOT}`
