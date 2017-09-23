@@ -9,7 +9,7 @@
 
 ## Directory structure
 
-* All of applications runs at `rurema` user.
+* All applications run at `rurema` user.
 * rurema-search: `/var/rubydoc`
 * docs.ruby-lang.org: `/var/www/docs.ruby-lang.org`
 * nginx configuration: `/etc/nginx/sites-available/docs.ruby-lang.org`
