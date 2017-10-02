@@ -31,8 +31,8 @@ def create_document(version)
          "--canonical-base-url=https://docs.ruby-lang.org/ja/latest/",
          "--tracking-id=UA-620926-3",
          "--quiet")
-  `rm -rf #{DOC_ROOT}/#{version}`
-  `mv /var/rubydoc/tmp/#{version} #{DOC_ROOT}`
+  system("rsync", "-acvi", "--no-times", "--delete", "/var/rubydoc/tmp/#{version}", DOC_ROOT) or raise
+  system("rm", "-rf", "/var/rubydoc/tmp/#{version}") or raise
   puts "#{version} is done."
 end
 

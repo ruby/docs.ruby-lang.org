@@ -15,8 +15,8 @@ def create_document(version)
   system("bundle", "exec", "rake", "update:#{version}") or raise
   system("bundle", "exec", "rake", "rdoc:clobber_en/#{version}") or raise
   system("bundle", "exec", "rake", "rdoc:en/#{version}") or raise
-  system("rm", "-rf", "#{DOC_ROOT}/#{version}") or raise
-  system("mv", version, DOC_ROOT) or raise
+  system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
+  system("rm", "-rf", version) or raise
   puts "#{version} is done."
 end
 
