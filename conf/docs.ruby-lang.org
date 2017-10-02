@@ -72,4 +72,6 @@
         server_name  localhost;
         root /var/rubydoc/rurema-search/current/public;
     	passenger_enabled on;
+
+        add_header Cache-Control "private";
     }
