@@ -7,7 +7,7 @@ VERSIONS = %w[
   trunk
 ]
 
-DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/public/en"
+DOC_ROOT = ENV.fetch('DOC_ROOT', "/var/www/docs.ruby-lang.org/shared/public/en")
 
 Dir.chdir(File.join(__dir__, '..'))
 
