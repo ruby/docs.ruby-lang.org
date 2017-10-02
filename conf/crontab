@@ -1,0 +1,5 @@
+# FIXME: https://github.com/ruby/docs.ruby-lang.org/issues/40
+#20  4  * * * cd /var/www/docs.ruby-lang.org/current; ruby system/rdoc-static-all
+15  9  * * * cd /var/www/docs.ruby-lang.org/current; ruby system/bc-setup-all; ruby system/bc-static-all
+15 11  * * * cd /var/www/docs.ruby-lang.org/current; system/update-rurema-index
+
