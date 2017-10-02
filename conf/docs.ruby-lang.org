@@ -58,7 +58,7 @@
         location ~ /ja/search/(css|javascripts) {
           rewrite ^/ja/search/(.+)$ /$1 break;
           root /var/rubydoc/rurema-search/current/public;
-          add_header Cache-Control "public, max-age=3600, s-maxage=43200, stale-while-revalidate=86400, stale-if-error=604800";
+          add_header Cache-Control "public, max-age=43200, s-maxage=43200, stale-while-revalidate=86400, stale-if-error=604800";
           add_header Surrogate-Key "rurema-search-assets";
         }
 
