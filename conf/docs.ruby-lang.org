@@ -35,13 +35,7 @@
         }
 
         location /ja/search {
-            if (-f $request_filename){
-                break;
-            }
-            if (!-f $request_filename){
-                proxy_pass http://localhost:9292;
-                break;
-            }
+            proxy_pass http://localhost:9292;
         }
 
         error_page   500 502 503 504  /50x.html;
