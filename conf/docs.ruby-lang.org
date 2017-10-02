@@ -36,6 +36,7 @@
         ssl_dhparam /etc/nginx/dhparam.pem;
 
         proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Proto https;
 
         location / {
             root   /var/www/docs.ruby-lang.org/current/public;
