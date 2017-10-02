@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+require 'uri'
+require 'net/http'
+require 'net/https'
+
+if ENV['FASTLY_API_KEY'] && ENV['FASTLY_SERVICE_ID']
+  api_key, service_id = ENV['FASTLY_API_KEY'], ENV['FASTLY_SERVICE_ID']
+else
+  api_key, service_id = File.read(File.expand_path('~/.docs-fastly')).lines[0..1].map(&:chomp)
+end
+
+soft = ARGV.delete('--soft')
+keys = ARGV
+
+url = URI.parse("https://api.fastly.com/service/#{service_id}/purge")
+
+req = Net::HTTP::Post.new(url.path)
+req.add_field('Fastly-Key', api_key)
+req.add_field('Surrogate-Key', keys.join(' '))
+req.add_field('Fastly-Soft-Purge', '1') if soft
+
+puts "#{soft ? 'Soft ' : nil}Purging #{keys.inspect} in service #{service_id}"
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = url.scheme == 'https'
+http.start do
+  http.request(req)
+  p res.value
+end
+

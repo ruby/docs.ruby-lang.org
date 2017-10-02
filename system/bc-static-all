@@ -33,6 +33,7 @@ def create_document(version)
          "--quiet")
   system("rsync", "-acvi", "--no-times", "--delete", "/var/rubydoc/tmp/#{version}", DOC_ROOT) or raise
   system("rm", "-rf", "/var/rubydoc/tmp/#{version}") or raise
+  system('./system/fastly-purge-key', '--soft', "ja/#{version}")
   puts "#{version} is done."
 end
 
