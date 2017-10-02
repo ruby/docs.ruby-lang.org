@@ -12,7 +12,7 @@
 
     server {
         listen 443 ssl;
-        server_name docs.ruby-lang.org;
+        server_name docs.ruby-lang.org docs-origin.ruby-lang.org;
 
         ssl on;
         ssl_certificate /etc/letsencrypt/live/docs.ruby-lang.org/fullchain.pem;
