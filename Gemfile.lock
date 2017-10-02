@@ -22,7 +22,7 @@ GEM
       ffi
     rbnacl-libsodium (1.0.11)
       rbnacl (>= 3.0.1)
-    rdoc (5.1.0)
+    rdoc (6.0.0.beta2)
     sshkit (1.14.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -36,7 +36,7 @@ DEPENDENCIES
   capistrano-bundler
   rbnacl (< 5.0.0)
   rbnacl-libsodium
-  rdoc
+  rdoc (>= 6.0.0.beta2)
 
 BUNDLED WITH
    1.15.3
