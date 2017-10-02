@@ -24,7 +24,7 @@ puts "#{soft ? 'Soft ' : nil}Purging #{keys.inspect} in service #{service_id}"
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = url.scheme == 'https'
 http.start do
-  http.request(req)
+  res = http.request(req)
   p res.value
 end
 
