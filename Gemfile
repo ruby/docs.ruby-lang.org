@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'rdoc'
+gem 'rdoc','>= 6.0.0.beta2'
 gem 'capistrano'
 gem 'capistrano-bundler'
 
