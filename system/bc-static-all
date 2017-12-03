@@ -29,6 +29,7 @@ def create_document(version)
          "--catalog=#{CATALOG}",
          "--fs-casesensitive",
          "--canonical-base-url=https://docs.ruby-lang.org/ja/latest/",
+         "--meta-robots-content=",
          "--tracking-id=UA-620926-3",
          "--quiet")
   system("rsync", "-acvi", "--no-times", "--delete", "/var/rubydoc/tmp/#{version}", DOC_ROOT) or raise
