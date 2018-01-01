@@ -26,15 +26,15 @@ def setup_db(version)
 end
 
 if !File.directory?(BITCLUST_BASE)
-  `git clone https://github.com/rurema/bitclust.git #{BITCLUST_BASE}`
+  `git clone --depth 1 https://github.com/rurema/bitclust.git #{BITCLUST_BASE}`
 end
 
 if !File.directory?(DOC_BASE)
-  `git clone https://github.com/rurema/doctree.git #{DOC_BASE}`
+  `git clone --depth 1 https://github.com/rurema/doctree.git #{DOC_BASE}`
 end
 
 Dir.chdir(DOC_BASE) do
-  system "git pull --rebase"
+  system "git pull --depth 1 --rebase"
 end
 
 VERSIONS.reverse_each do |version|
