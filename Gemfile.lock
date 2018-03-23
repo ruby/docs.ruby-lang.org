@@ -13,14 +13,14 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.2)
     concurrent-ruby (1.0.5)
-    ffi (1.9.18)
+    ffi (1.9.23)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.2.0)
     rake (12.3.0)
-    rbnacl (4.0.2)
+    rbnacl (5.0.0)
       ffi
     rbnacl-libsodium (1.0.16)
       rbnacl (>= 3.0.1)
@@ -36,7 +36,7 @@ DEPENDENCIES
   bcrypt_pbkdf
   capistrano
   capistrano-bundler
-  rbnacl (< 5.0.0)
+  rbnacl (< 6.0.0)
   rbnacl-libsodium
   rdoc (>= 6.0.0.beta2)
 
