@@ -24,7 +24,7 @@ GEM
       ffi
     rbnacl-libsodium (1.0.16)
       rbnacl (>= 3.0.1)
-    rdoc (6.0.2)
+    rdoc (6.0.3)
     sshkit (1.15.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
