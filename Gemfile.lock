@@ -13,7 +13,7 @@ GEM
       capistrano (~> 3.1)
       sshkit (~> 1.2)
     concurrent-ruby (1.0.5)
-    ffi (1.9.23)
+    ffi (1.9.25)
     i18n (1.0.0)
       concurrent-ruby (~> 1.0)
     net-scp (1.2.1)
