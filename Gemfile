@@ -5,6 +5,5 @@ gem 'capistrano'
 gem 'capistrano-bundler'
 
 # ed25519
-gem 'rbnacl', '< 6.0.0'
-gem 'rbnacl-libsodium'
+gem 'ed25519'
 gem 'bcrypt_pbkdf'
