@@ -4,7 +4,7 @@ VERSIONS = %w[
   2.4.0
   2.5.0
   2.6.0
-  trunk
+  master
 ]
 
 DOC_ROOT = ENV.fetch('DOC_ROOT', "/var/www/docs.ruby-lang.org/shared/public/en")
