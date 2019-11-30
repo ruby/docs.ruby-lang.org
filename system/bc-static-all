@@ -46,3 +46,4 @@ Dir.chdir(DOC_ROOT) do
   system("unlink", "latest")
   system("ln", "-s", "-f", VERSIONS.max, "latest")
 end
+system('./system/fastly-purge-key', '--soft', 'ja/latest')
