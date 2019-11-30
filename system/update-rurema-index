@@ -13,6 +13,5 @@ BITCLUST_LIB_DIR=$BASE_DIR/bitclust/lib
 set -e
 cd ${CURRENT_DIR}
 $BUNDLE exec $RUBY -I${BITCLUST_LIB_DIR} ${CURRENT_DIR}/bin/bitclust-indexer ${DOC_BASE}/db-*
-
-cd ${SCRIPT_DIR}
-./system/fastly-purge-key --soft rurema-search-app || :
+cd -
+${SCRIPT_DIR}/fastly-purge-key --soft rurema-search-app || :
