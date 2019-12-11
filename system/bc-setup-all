@@ -33,11 +33,13 @@ if !File.directory?(DOC_BASE)
 end
 
 Dir.chdir(BITCLUST_BASE) do
-  system "git pull --depth 1 --rebase"
+  system "git fetch origin"
+  system "git reset origin/master --hard"
 end
 
 Dir.chdir(DOC_BASE) do
-  system "git pull --depth 1 --rebase"
+  system "git fetch origin"
+  system "git reset origin/master --hard"
 end
 
 VERSIONS.reverse_each do |version|
