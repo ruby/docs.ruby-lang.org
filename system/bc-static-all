@@ -4,6 +4,7 @@ VERSIONS = %w[
   2.4.0
   2.5.0
   2.6.0
+  2.7.0
 ]
 
 RUBY = "ruby"
@@ -43,7 +44,8 @@ VERSIONS.reverse_each do |version|
 end
 
 Dir.chdir(DOC_ROOT) do
-  system("unlink", "latest")
-  system("ln", "-s", "-f", VERSIONS.max, "latest")
+  system("ln", "-s", "-n", "-f", VERSIONS[-2], "latest")
+  system("ln", "-s", "-n", "-f", VERSIONS[-1], "master")
 end
 system('./system/fastly-purge-key', '--soft', 'ja/latest')
+system('./system/fastly-purge-key', '--soft', 'ja/master')
