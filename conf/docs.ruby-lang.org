@@ -6,8 +6,17 @@
 
     server {
         listen 80;
-        server_name  docs.ruby-lang.org;
+        server_name docs.ruby-lang.org;
         return 301 https://docs.ruby-lang.org$request_uri;
+    }
+
+    # for certbot acme challenge
+    server {
+        listen 80;
+        server_name docs-origin.ruby-lang.org;
+        location / {
+            root /var/www/html;
+        }
     }
 
     server {
@@ -15,8 +24,8 @@
         server_name docs.ruby-lang.org docs-origin.ruby-lang.org;
 
         ssl on;
-        ssl_certificate /etc/letsencrypt/live/docs.ruby-lang.org/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/docs.ruby-lang.org/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem;
 
         ssl_buffer_size 4k;
 
@@ -24,7 +33,7 @@
         ssl_ciphers 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS';
         ssl_prefer_server_ciphers on;
 
-        ssl_trusted_certificate /etc/letsencrypt/live/docs.ruby-lang.org/chain.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem;
         ssl_stapling on;
         ssl_stapling_verify on;
         resolver 8.8.8.8;
@@ -58,7 +67,7 @@
         location ~ /ja/search/(css|javascripts) {
           rewrite ^/ja/search/(.+)$ /$1 break;
           root /var/rubydoc/rurema-search/current/public;
-          add_header Cache-Control "public, max-age=43200, s-maxage=43200, stale-while-revalidate=86400, stale-if-error=604800";
+          add_header Cache-Control "public, max-age=43200, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=604800";
           add_header Surrogate-Key "rurema-search-assets";
         }
 
@@ -74,6 +83,10 @@
         root /var/rubydoc/rurema-search/current/public;
     	passenger_enabled on;
 
+        # add_header Cache-Control "private";
         add_header Cache-Control "public, max-age=3600, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=60";
         add_header Surrogate-Key "rurema-search-app";
+
+
     }
+  
