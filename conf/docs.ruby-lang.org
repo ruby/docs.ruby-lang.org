@@ -58,8 +58,8 @@
               return 301 https://docs.ruby-lang.org/en/master$1;
             }
 
-            location ~ ^/ja/2\.8\.0(.*) {
-              return 302 https://docs.ruby-lang.org/ja/master$1;
+            location ~ ^/(en|ja)/2\.8\.0(.*) {
+              return 302 https://docs.ruby-lang.org/$1/master$2;
             }
 
             location ~ ^/(en|ja)/(.+?)/ {
