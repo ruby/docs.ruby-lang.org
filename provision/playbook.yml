@@ -78,27 +78,36 @@
     - '/var/rubydoc'
     - '/var/rubydoc/rurema-search/shared'
 
-  - name: 'Cron: rdoc'
-    cron:
-      name: 'rdoc'
-      minute: '20'
-      hour: '13'
-      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/rdoc-static-all'
-      user: 'rurema'
-  - name: 'Cron: bitclust'
-    cron:
-      name: 'bitclust'
-      minute: '15'
-      hour: '0'
-      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/bc-setup-all; ruby system/bc-static-all'
-      user: 'rurema'
-  - name: 'Cron: update-rurema-index'
-    cron:
-      name: 'update-rurema-index'
-      minute: '15'
-      hour: '2'
-      job: 'cd /var/www/docs.ruby-lang.org/current; system/update-rurema-index'
-      user: 'rurema'
+  - name: 'Copy systemd unit files'
+    copy:
+      dest: '/etc/systemd/system/{{ item }}'
+      src: 'systemd/{{ item }}'
+    with_items:
+    - 'update-docs-en.timer'
+    - 'rdoc-static-all.service'
+    - 'update-docs-ja.timer'
+    - 'bc-setup-all.service'
+    - 'bc-static-all.path'
+    - 'bc-static-all.service'
+    - 'update-rurema-index.path'
+    - 'update-rurema-index.service'
+  - name: 'Enable systemd units'
+    systemd:
+      name: '{{ item }}'
+      state: started
+      enabled: yes
+    with_items:
+    - 'update-docs-en.timer'
+    - 'update-docs-ja.timer'
+    - 'bc-static-all.path'
+    - 'update-rurema-index.path'
+
+  - name: 'Copy tmpfiles.d/docs.ruby-lang.org.conf'
+    copy:
+      dest: '/etc/tmpfiles.d/docs.ruby-lang.org.conf'
+      content: |
+        d /run/docs.ruby-lang.org 0755 rurema rurema
+    notify: 'systemd-tmpfiles'
 
   - name: 'git clone rurema/doctree'
     git:
@@ -145,3 +154,7 @@
     file:
       dest: '/etc/nginx/sites-enabled/default'
       state: absent
+
+  handlers:
+  - name: 'systemd-tmpfiles'
+    command: '/bin/systemd-tmpfiles --create --remove'

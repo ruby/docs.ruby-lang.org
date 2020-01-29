@@ -35,3 +35,8 @@
       remote_src: yes
       src: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem'
       dest: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem'
+
+  - name: 'Restart nginx'
+    systemd:
+      state: restarted
+      name: 'nginx.service'

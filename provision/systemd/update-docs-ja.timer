@@ -1,0 +1,10 @@
+[Unit]
+Description=Update docs.ruby-lang.org/ja/
+
+[Timer]
+OnCalendar=*-*-* 0:15
+Persistent=true
+Unit=bc-setup-all.service
+
+[Install]
+WantedBy=timers.target

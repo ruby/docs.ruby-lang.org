@@ -1,0 +1,10 @@
+[Unit]
+Description=Update docs.ruby-lang.org/en/
+
+[Timer]
+OnCalendar=*-*-* 13:20
+Persistent=true
+Unit=rdoc-static-all.service
+
+[Install]
+WantedBy=timers.target

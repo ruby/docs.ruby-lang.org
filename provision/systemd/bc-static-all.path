@@ -1,0 +1,8 @@
+[Unit]
+Description=Trigger bc-static-all
+
+[Path]
+PathModified=/run/docs.ruby-lang.org/bc-setup-all.updated
+
+[Install]
+WantedBy=multi-user.target
