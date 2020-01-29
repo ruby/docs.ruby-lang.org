@@ -1,0 +1,147 @@
+---
+- hosts: default
+  become: yes
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: '/usr/bin/python'
+  tasks:
+  - name: 'Setup packages'
+    apt:
+      name:
+      # for setup
+      - nginx
+      - git
+      - bundler
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - lv
+      # for convenience
+      - w3m
+
+  # https://groonga.org/ja/docs/install/debian.html#stretch
+  - name: 'Download groonga-archive-keyring.gpg'
+    get_url:
+      url: 'https://packages.groonga.org/debian/groonga-archive-keyring.gpg'
+      dest: '/usr/share/keyrings/groonga-archive-keyring.gpg'
+  - name: 'Add groonga repository'
+    apt_repository:
+      repo: 'deb [signed-by=/usr/share/keyrings/groonga-archive-keyring.gpg] https://packages.groonga.org/debian/ stretch main'
+  - name: 'Install groonga'
+    apt:
+      name:
+      - 'groonga={{ groonga_version }}'
+      - 'groonga-bin={{ groonga_version }}'
+      - 'groonga-plugin-suggest={{ groonga_version }}'
+      - 'groonga-doc={{ groonga_version }}'
+      - 'libgroonga0={{ groonga_version }}'
+      - 'libgroonga-dev={{ groonga_version }}'
+    vars:
+      groonga_version: '7.1.1-1'
+
+  # https://www.phusionpassenger.com/library/install/nginx/install/oss/stretch/
+  - name: 'Add apt key of Passenger packages'
+    apt_key:
+      keyserver: keyserver.ubuntu.com
+      id: 561F9B9CAC40B2F7
+  - name: 'Add Passenger repository'
+    apt_repository:
+      repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main'
+  - name: 'Install passenger'
+    apt:
+      name: libnginx-mod-http-passenger
+
+  - name: 'User rurema'
+    user:
+      name: 'rurema'
+      create_home: yes
+      shell: '/bin/bash'
+      groups: 'sudo'
+      append: yes
+  - name: 'Copy .ssh'
+    copy:
+      remote_src: yes
+      src: '/home/vagrant/.ssh'
+      dest: '/home/rurema'
+      owner: 'rurema'
+      group: 'rurema'
+      mode: 'preserve'
+
+  - name: 'Create directories'
+    file:
+      path: '{{ item }}'
+      state: directory
+      owner: 'rurema'
+      group: 'rurema'
+    with_items:
+    - '/var/www/docs.ruby-lang.org'
+    - '/var/rubydoc'
+    - '/var/rubydoc/rurema-search/shared'
+
+  - name: 'Cron: rdoc'
+    cron:
+      name: 'rdoc'
+      minute: '20'
+      hour: '13'
+      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/rdoc-static-all'
+      user: 'rurema'
+  - name: 'Cron: bitclust'
+    cron:
+      name: 'bitclust'
+      minute: '15'
+      hour: '0'
+      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/bc-setup-all; ruby system/bc-static-all'
+      user: 'rurema'
+  - name: 'Cron: update-rurema-index'
+    cron:
+      name: 'update-rurema-index'
+      minute: '15'
+      hour: '2'
+      job: 'cd /var/www/docs.ruby-lang.org/current; system/update-rurema-index'
+      user: 'rurema'
+
+  - name: 'git clone rurema/doctree'
+    git:
+      repo: 'https://github.com/rurema/doctree.git'
+      dest: '/var/rubydoc/doctree'
+      depth: 1
+    become: yes
+    become_user: 'rurema'
+    vars:
+      ansible_ssh_pipelining: yes
+
+  - name: 'Copy nginx site'
+    copy:
+      src: '../conf/docs.ruby-lang.org'
+      dest: '/etc/nginx/sites-available/docs.ruby-lang.org'
+  - name: 'Copy vagrant nginx site'
+    copy:
+      remote_src: yes
+      src: '/etc/nginx/sites-available/docs.ruby-lang.org'
+      dest: '/etc/nginx/sites-available/docs.ruby-lang.org.vagrant'
+    when: docs_https_port is defined
+    changed_when: no
+  - name: 'Change port in vagrant nginx site'
+    lineinfile:
+      path: '/etc/nginx/sites-available/docs.ruby-lang.org.vagrant'
+      regexp: '^(.*)proxy_set_header X-Forwarded-Port 443;$'
+      line: '\1proxy_set_header X-Forwarded-Port {{ docs_https_port }};'
+      backrefs: yes
+    when: docs_https_port is defined
+    changed_when: no
+  - name: 'Enable docs.ruby-lang.org site'
+    file:
+      src: '../sites-available/docs.ruby-lang.org'
+      dest: '/etc/nginx/sites-enabled/docs.ruby-lang.org'
+      state: link
+    when: docs_https_port is not defined
+  - name: 'Enable docs.ruby-lang.org vagrant site'
+    file:
+      src: '../sites-available/docs.ruby-lang.org.vagrant'
+      dest: '/etc/nginx/sites-enabled/docs.ruby-lang.org'
+      state: link
+    when: docs_https_port is defined
+  - name: 'Disable default site'
+    file:
+      dest: '/etc/nginx/sites-enabled/default'
+      state: absent

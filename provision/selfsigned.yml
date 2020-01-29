@@ -1,0 +1,37 @@
+---
+- hosts: default
+  become: yes
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: '/usr/bin/python'
+  tasks:
+  - name: 'Install crypto backend'
+    apt:
+      name: python-cryptography
+  - name: 'Create /etc/letsencrypt/live/docs-origin.ruby-lang.org'
+    file:
+      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org'
+      state: directory
+  - name: 'Generate private key'
+    openssl_privatekey:
+      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
+  - name: 'Generate CSR'
+    openssl_csr:
+      path: '/etc/letsencrypt/docs-origin.ruby-lang.org.csr'
+      privatekey_path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
+      common_name: 'localhost'
+  - name: 'Generate a Self Signed OpenSSL certificate'
+    openssl_certificate:
+      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem'
+      privatekey_path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
+      csr_path: '/etc/letsencrypt/docs-origin.ruby-lang.org.csr'
+      provider: selfsigned
+  - name: 'Generate Diffie-Hellman parameters'
+    openssl_dhparam:
+      path: '/etc/nginx/dhparam.pem'
+      size: 2048
+  - name: 'Create /etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem'
+    copy:
+      remote_src: yes
+      src: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem'
+      dest: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem'
