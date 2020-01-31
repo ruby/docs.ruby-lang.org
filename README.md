@@ -5,13 +5,13 @@
 * We use `capistrano` for deployments.
 * Currently hosted on AWS EC2 Tokyo region
   * All applications run as `rurema` user.
-* Periodic tasks run in cron (`crontab -u rurema`)
+* Periodic tasks run in systemd timer (`systemctl list-timers`)
 
 ### Requisites
 
-* Debian 9 (stretch)
+* Debian 10 (buster)
   * `apt install nginx groonga git bundler certbot`
-* passenger nginx module: https://www.phusionpassenger.com/library/install/nginx/install/oss/stretch/
+* passenger nginx module: https://www.phusionpassenger.com/docs/advanced_guides/install_and_upgrade/standalone/install/oss/buster.html
 
 ## Files and Directories
 

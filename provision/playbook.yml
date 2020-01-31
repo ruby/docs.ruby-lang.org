@@ -18,35 +18,18 @@
       - lv
       # for convenience
       - w3m
+      # groonga
+      - groonga
+      - libgroonga-dev
 
-  # https://groonga.org/ja/docs/install/debian.html#stretch
-  - name: 'Download groonga-archive-keyring.gpg'
-    get_url:
-      url: 'https://packages.groonga.org/debian/groonga-archive-keyring.gpg'
-      dest: '/usr/share/keyrings/groonga-archive-keyring.gpg'
-  - name: 'Add groonga repository'
-    apt_repository:
-      repo: 'deb [signed-by=/usr/share/keyrings/groonga-archive-keyring.gpg] https://packages.groonga.org/debian/ stretch main'
-  - name: 'Install groonga'
-    apt:
-      name:
-      - 'groonga={{ groonga_version }}'
-      - 'groonga-bin={{ groonga_version }}'
-      - 'groonga-plugin-suggest={{ groonga_version }}'
-      - 'groonga-doc={{ groonga_version }}'
-      - 'libgroonga0={{ groonga_version }}'
-      - 'libgroonga-dev={{ groonga_version }}'
-    vars:
-      groonga_version: '7.1.1-1'
-
-  # https://www.phusionpassenger.com/library/install/nginx/install/oss/stretch/
+  # https://www.phusionpassenger.com/docs/advanced_guides/install_and_upgrade/nginx/install/oss/buster.html
   - name: 'Add apt key of Passenger packages'
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: 561F9B9CAC40B2F7
   - name: 'Add Passenger repository'
     apt_repository:
-      repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main'
+      repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger buster main'
   - name: 'Install passenger'
     apt:
       name: libnginx-mod-http-passenger
