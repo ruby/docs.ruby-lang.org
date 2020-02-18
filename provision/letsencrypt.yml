@@ -15,3 +15,6 @@
     systemd:
       state: restarted
       name: 'nginx.service'
+  - name: 'Install certbot'
+    apt:
+      name: certbot
