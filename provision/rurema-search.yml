@@ -21,3 +21,25 @@
       content: |
         use_log: false
         use_cache: false
+- hosts: docs-2020
+  become: yes
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: '/usr/bin/python'
+  tasks:
+  - name: 'Copy rurema-search/shared/document.yaml'
+    copy:
+      dest: '/var/rubydoc/rurema-search/shared/document.yaml'
+      content: |
+        base_url:
+          http://docs.ruby-lang.org/ja/
+        remove_dot_from_version:
+          false
+        tracking_id:
+          UA-620926-3
+  - name: 'Copy rurema-search/shared/production.yaml'
+    copy:
+      dest: '/var/rubydoc/rurema-search/shared/production.yaml'
+      content: |
+        use_log: false
+        use_cache: false
