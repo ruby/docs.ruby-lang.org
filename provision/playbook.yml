@@ -50,6 +50,16 @@
       group: 'rurema'
       mode: 'preserve'
     when: inventory_hostname == 'default'
+  - name: 'Copy .ssh'
+    copy:
+      remote_src: yes
+      src: '/home/admin/.ssh'
+      dest: '/home/rurema'
+      owner: 'rurema'
+      group: 'rurema'
+      mode: 'preserve'
+    # copy first time only
+    when: no # inventory_hostname == 'docs-2020'
 
   - name: 'Create directories'
     file:
