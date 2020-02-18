@@ -16,7 +16,9 @@
       - ca-certificates
       - curl
       - lv
+      - rsync
       # for convenience
+      - etckeeper
       - w3m
       # groonga
       - groonga
