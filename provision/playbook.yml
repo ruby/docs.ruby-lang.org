@@ -1,5 +1,5 @@
 ---
-- hosts: default
+- hosts: default,docs-2020
   become: yes
   gather_facts: no
   vars:
@@ -49,6 +49,7 @@
       owner: 'rurema'
       group: 'rurema'
       mode: 'preserve'
+    when: inventory_hostname == 'default'
 
   - name: 'Create directories'
     file:
