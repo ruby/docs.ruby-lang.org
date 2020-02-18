@@ -1,5 +1,5 @@
 ---
-- hosts: default
+- hosts: default,docs-2020
   become: yes
   gather_facts: no
   vars:
@@ -16,37 +16,22 @@
       - ca-certificates
       - curl
       - lv
+      - rsync
       # for convenience
+      - etckeeper
       - w3m
+      # groonga
+      - groonga
+      - libgroonga-dev
 
-  # https://groonga.org/ja/docs/install/debian.html#stretch
-  - name: 'Download groonga-archive-keyring.gpg'
-    get_url:
-      url: 'https://packages.groonga.org/debian/groonga-archive-keyring.gpg'
-      dest: '/usr/share/keyrings/groonga-archive-keyring.gpg'
-  - name: 'Add groonga repository'
-    apt_repository:
-      repo: 'deb [signed-by=/usr/share/keyrings/groonga-archive-keyring.gpg] https://packages.groonga.org/debian/ stretch main'
-  - name: 'Install groonga'
-    apt:
-      name:
-      - 'groonga={{ groonga_version }}'
-      - 'groonga-bin={{ groonga_version }}'
-      - 'groonga-plugin-suggest={{ groonga_version }}'
-      - 'groonga-doc={{ groonga_version }}'
-      - 'libgroonga0={{ groonga_version }}'
-      - 'libgroonga-dev={{ groonga_version }}'
-    vars:
-      groonga_version: '7.1.1-1'
-
-  # https://www.phusionpassenger.com/library/install/nginx/install/oss/stretch/
+  # https://www.phusionpassenger.com/docs/advanced_guides/install_and_upgrade/nginx/install/oss/buster.html
   - name: 'Add apt key of Passenger packages'
     apt_key:
       keyserver: keyserver.ubuntu.com
       id: 561F9B9CAC40B2F7
   - name: 'Add Passenger repository'
     apt_repository:
-      repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger stretch main'
+      repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger buster main'
   - name: 'Install passenger'
     apt:
       name: libnginx-mod-http-passenger
@@ -66,6 +51,17 @@
       owner: 'rurema'
       group: 'rurema'
       mode: 'preserve'
+    when: inventory_hostname == 'default'
+  - name: 'Copy .ssh'
+    copy:
+      remote_src: yes
+      src: '/home/admin/.ssh'
+      dest: '/home/rurema'
+      owner: 'rurema'
+      group: 'rurema'
+      mode: 'preserve'
+    # copy first time only
+    when: no # inventory_hostname == 'docs-2020'
 
   - name: 'Create directories'
     file:
@@ -78,27 +74,36 @@
     - '/var/rubydoc'
     - '/var/rubydoc/rurema-search/shared'
 
-  - name: 'Cron: rdoc'
-    cron:
-      name: 'rdoc'
-      minute: '20'
-      hour: '13'
-      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/rdoc-static-all'
-      user: 'rurema'
-  - name: 'Cron: bitclust'
-    cron:
-      name: 'bitclust'
-      minute: '15'
-      hour: '0'
-      job: 'cd /var/www/docs.ruby-lang.org/current; ruby system/bc-setup-all; ruby system/bc-static-all'
-      user: 'rurema'
-  - name: 'Cron: update-rurema-index'
-    cron:
-      name: 'update-rurema-index'
-      minute: '15'
-      hour: '2'
-      job: 'cd /var/www/docs.ruby-lang.org/current; system/update-rurema-index'
-      user: 'rurema'
+  - name: 'Copy systemd unit files'
+    copy:
+      dest: '/etc/systemd/system/{{ item }}'
+      src: 'systemd/{{ item }}'
+    with_items:
+    - 'update-docs-en.timer'
+    - 'rdoc-static-all.service'
+    - 'update-docs-ja.timer'
+    - 'bc-setup-all.service'
+    - 'bc-static-all.path'
+    - 'bc-static-all.service'
+    - 'update-rurema-index.path'
+    - 'update-rurema-index.service'
+  - name: 'Enable systemd units'
+    systemd:
+      name: '{{ item }}'
+      state: started
+      enabled: yes
+    with_items:
+    - 'update-docs-en.timer'
+    - 'update-docs-ja.timer'
+    - 'bc-static-all.path'
+    - 'update-rurema-index.path'
+
+  - name: 'Copy tmpfiles.d/docs.ruby-lang.org.conf'
+    copy:
+      dest: '/etc/tmpfiles.d/docs.ruby-lang.org.conf'
+      content: |
+        d /run/docs.ruby-lang.org 0755 rurema rurema
+    notify: 'systemd-tmpfiles'
 
   - name: 'git clone rurema/doctree'
     git:
@@ -145,3 +150,7 @@
     file:
       dest: '/etc/nginx/sites-enabled/default'
       state: absent
+
+  handlers:
+  - name: 'systemd-tmpfiles'
+    command: '/bin/systemd-tmpfiles --create --remove'

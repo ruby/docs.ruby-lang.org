@@ -1,0 +1,11 @@
+[Unit]
+Description=Update docs.ruby-lang.org/ja/search/
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/www/docs.ruby-lang.org/current
+ExecStart=/bin/bash system/update-rurema-index
+User=rurema
+Group=rurema
+#ExecStartPre=!/usr/bin/install -o rurema -g rurema -d /run/docs.ruby-lang.org
+ExecStartPost=/usr/bin/touch /run/docs.ruby-lang.org/update-rurema-index.updated

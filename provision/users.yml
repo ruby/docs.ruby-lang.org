@@ -1,0 +1,34 @@
+---
+- hosts: docs-2020
+  become: yes
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: '/usr/bin/python'
+    users:
+    - name: znz
+      github_user: znz
+  tasks:
+  - name: 'Add user'
+    user:
+      name: '{{ item.name }}'
+      create_home: yes
+      shell: '/bin/bash'
+      groups: 'sudo'
+      append: yes
+    loop: '{{ users }}'
+  - name: 'Create .ssh'
+    file:
+      path: '/home/{{ item.name }}/.ssh'
+      state: directory
+      mode: '0755'
+      owner: '{{ item.name }}'
+      group: '{{ item.name }}'
+    loop: '{{ users }}'
+  - name: 'Download ssh public keys'
+    get_url:
+      url: 'https://github.com/{{ item.github_user }}.keys'
+      dest: '/home/{{ item.name }}/.ssh/authorized_keys'
+      mode: '0644'
+      owner: '{{ item.name }}'
+      group: '{{ item.name }}'
+    loop: '{{ users }}'

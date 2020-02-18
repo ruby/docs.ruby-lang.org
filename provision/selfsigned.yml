@@ -4,34 +4,47 @@
   gather_facts: no
   vars:
     ansible_python_interpreter: '/usr/bin/python'
+    domains:
+    - 'docs-origin.ruby-lang.org'
+    - 'doc.ruby-lang.org'
   tasks:
   - name: 'Install crypto backend'
     apt:
       name: python-cryptography
-  - name: 'Create /etc/letsencrypt/live/docs-origin.ruby-lang.org'
+  - name: 'Create /etc/letsencrypt/live/DOMAIN directory'
     file:
-      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org'
+      path: '/etc/letsencrypt/live/{{ item }}'
       state: directory
+    loop: '{{ domains }}'
   - name: 'Generate private key'
     openssl_privatekey:
-      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
+      path: '/etc/letsencrypt/live/{{ item }}/privkey.pem'
+    loop: '{{ domains }}'
   - name: 'Generate CSR'
     openssl_csr:
-      path: '/etc/letsencrypt/docs-origin.ruby-lang.org.csr'
-      privatekey_path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
+      path: '/etc/letsencrypt/{{ item }}.csr'
+      privatekey_path: '/etc/letsencrypt/live/{{ item }}/privkey.pem'
       common_name: 'localhost'
+    loop: '{{ domains }}'
   - name: 'Generate a Self Signed OpenSSL certificate'
     openssl_certificate:
-      path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem'
-      privatekey_path: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem'
-      csr_path: '/etc/letsencrypt/docs-origin.ruby-lang.org.csr'
+      path: '/etc/letsencrypt/live/{{ item }}/fullchain.pem'
+      privatekey_path: '/etc/letsencrypt/live/{{ item }}/privkey.pem'
+      csr_path: '/etc/letsencrypt/{{ item }}.csr'
       provider: selfsigned
+    loop: '{{ domains }}'
   - name: 'Generate Diffie-Hellman parameters'
     openssl_dhparam:
       path: '/etc/nginx/dhparam.pem'
       size: 2048
-  - name: 'Create /etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem'
+  - name: 'Create chain.pem'
     copy:
       remote_src: yes
-      src: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem'
-      dest: '/etc/letsencrypt/live/docs-origin.ruby-lang.org/chain.pem'
+      src: '/etc/letsencrypt/live/{{ item }}/fullchain.pem'
+      dest: '/etc/letsencrypt/live/{{ item }}/chain.pem'
+    loop: '{{ domains }}'
+
+  - name: 'Restart nginx'
+    systemd:
+      state: restarted
+      name: 'nginx.service'

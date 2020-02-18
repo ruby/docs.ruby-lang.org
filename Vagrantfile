@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'debian/stretch64'
+  config.vm.box = 'debian/buster64'
 
   docs_https_port = ENV.fetch('DOCS_HTTPS_PORT') { 10443 }.to_i
   config.vm.network 'forwarded_port', guest: 443, host: docs_https_port

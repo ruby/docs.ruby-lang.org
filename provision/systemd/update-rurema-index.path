@@ -1,0 +1,8 @@
+[Unit]
+Description=Trigger update-rurema-index
+
+[Path]
+PathModified=/run/docs.ruby-lang.org/bc-static-all.updated
+
+[Install]
+WantedBy=multi-user.target
