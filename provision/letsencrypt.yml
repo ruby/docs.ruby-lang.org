@@ -1,0 +1,17 @@
+- hosts: docs-2020
+  become: yes
+  gather_facts: no
+  vars:
+    ansible_python_interpreter: '/usr/bin/python'
+  tasks:
+  - name: 'Install crypto backend'
+    apt:
+      name: python-cryptography
+  - name: 'Generate Diffie-Hellman parameters'
+    openssl_dhparam:
+      path: '/etc/nginx/dhparam.pem'
+      size: 4096
+  - name: 'Restart nginx'
+    systemd:
+      state: restarted
+      name: 'nginx.service'
