@@ -1,13 +1,25 @@
     server {
         listen 80;
         server_name doc.ruby-lang.org;
-        return 301 https://docs.ruby-lang.org$request_uri;
+        location /.well-known/acme-challenge {
+            default_type "text/plain";
+            root /var/www/html;
+        }
+        location / {
+            return 301 https://docs.ruby-lang.org$request_uri;
+        }
     }
 
     server {
         listen 80;
         server_name docs.ruby-lang.org;
-        return 301 https://docs.ruby-lang.org$request_uri;
+        location /.well-known/acme-challenge {
+            default_type "text/plain";
+            root /var/www/html;
+        }
+        location / {
+            return 301 https://docs.ruby-lang.org$request_uri;
+        }
     }
 
     # for certbot acme challenge
