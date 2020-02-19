@@ -19,7 +19,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     rake (13.0.1)
-    rdoc (6.2.0)
+    rdoc (6.2.1)
     sshkit (1.20.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
