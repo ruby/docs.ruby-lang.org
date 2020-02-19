@@ -7,6 +7,14 @@
     users:
     - name: znz
       github_user: znz
+    - name: hsbt
+      github_user: hsbt
+    - name: okkez
+      github_user: okkez
+    - name: shugo
+      github_user: shugo
+    - name: sorah
+      github_user: sorah
   tasks:
   - name: 'Add user'
     user:
