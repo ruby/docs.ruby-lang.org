@@ -40,3 +40,12 @@
       owner: '{{ item.name }}'
       group: '{{ item.name }}'
     loop: '{{ users }}'
+  - name: 'Allow passwordless sudo'
+    lineinfile:
+      dest: /etc/sudoers.d/local-users
+      create: yes
+      state: present
+      regexp: '^{{ item.name }} '
+      line: '{{ item.name }} ALL=(ALL) NOPASSWD:ALL'
+      validate: 'visudo -cf %s'
+    loop: '{{ users }}'
