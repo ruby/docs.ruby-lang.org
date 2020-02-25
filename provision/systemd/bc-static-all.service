@@ -5,7 +5,7 @@ OnFailure=notify-to-slack@%n.service
 [Service]
 Type=oneshot
 WorkingDirectory=/var/www/docs.ruby-lang.org/current
-ExecStart=/usr/bin/ruby system/bc-static-all
+ExecStart=/snap/bin/ruby system/bc-static-all
 User=rurema
 Group=rurema
 #ExecStartPre=!/usr/bin/install -o rurema -g rurema -d /run/docs.ruby-lang.org
