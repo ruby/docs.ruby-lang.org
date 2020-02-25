@@ -19,6 +19,12 @@
 * docs.ruby-lang.org: `/var/www/docs.ruby-lang.org`
 * nginx configuration: `/etc/nginx/sites-available/docs.ruby-lang.org`
 
+## Files need to backup
+
+* old statically generated contents (old versions need to copy from old server): `/var/www/docs.ruby-lang.org/shared/public/{en,ja}/*`
+* Fastly API Key: `/home/rurema/.docs-fastly`
+* Slack webhook URL: `/etc/systemd/system/notify-to-slack.env`
+
 ## Related repos
 
 * https://github.com/ruby/rurema-search
