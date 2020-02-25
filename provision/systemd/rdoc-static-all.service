@@ -1,5 +1,6 @@
 [Unit]
 Description=Run rdoc-static-all
+OnFailure=notify-to-slack@%n.service
 
 [Service]
 Type=oneshot

@@ -1,5 +1,6 @@
 [Unit]
 Description=Run bc-setup-all
+OnFailure=notify-to-slack@%n.service
 
 [Service]
 Type=oneshot

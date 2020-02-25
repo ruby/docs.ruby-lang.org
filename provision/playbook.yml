@@ -87,6 +87,14 @@
     - 'bc-static-all.service'
     - 'update-rurema-index.path'
     - 'update-rurema-index.service'
+    - 'notify-to-slack@.service'
+  - name: 'Copy systemd unit related files'
+    copy:
+      dest: '/usr/local/bin/{{ item }}'
+      src: 'systemd/{{ item }}'
+      mode: '0755'
+    with_items:
+    - 'notify-to-slack.rb'
   - name: 'Enable systemd units'
     systemd:
       name: '{{ item }}'

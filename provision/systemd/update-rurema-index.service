@@ -1,5 +1,6 @@
 [Unit]
 Description=Update docs.ruby-lang.org/ja/search/
+OnFailure=notify-to-slack@%n.service
 
 [Service]
 Type=oneshot

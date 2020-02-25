@@ -1,0 +1,12 @@
+[Unit]
+Description=Notify systemd %i unit status to slack
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/notify-to-slack.rb %i
+User=nobody
+Group=systemd-journal
+Environment=SLACK_USERNAME="docs.ruby-lang.org"
+Environment=SLACK_ICON_EMOJI=":red_circle:"
+# SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+EnvironmentFile=/etc/systemd/system/notify-to-slack.env
