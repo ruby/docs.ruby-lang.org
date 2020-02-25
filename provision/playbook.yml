@@ -84,6 +84,7 @@
       dest: '/etc/systemd/system/{{ item }}'
       src: 'systemd/{{ item }}'
     with_items:
+    - 'prepend-snap-path'
     - 'update-docs-en.timer'
     - 'rdoc-static-all.service'
     - 'update-docs-ja.timer'
