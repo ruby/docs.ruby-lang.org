@@ -18,3 +18,10 @@
   - name: 'Install certbot'
     apt:
       name: certbot
+  - name: 'Restart nginx after renew'
+    copy:
+      content: |
+        #!/bin/sh
+        systemctl reload nginx.service
+      dest: '/etc/letsencrypt/renewal-hooks/deploy/nginx'
+      mode: '0755'
