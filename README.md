@@ -56,3 +56,34 @@ sudo systemctl status rdoc-static-all.service bc-setup-all.service bc-static-all
 - Run `sudo systemctl status rdoc-static-all.service bc-setup-all.service bc-static-all.service update-rurema-index.service` to see progress.
   - `Active: activating (start) since ...` means running.
   - `Active: inactive (dead) since ...` means finished.
+
+## Production Environment
+
+### ansible
+
+```
+ansible-playbook -i docs-2020, provision/playbook.yml
+ansible-playbook -i docs-2020, provision/users.yml
+ansible-playbook -i docs-2020, provision/rurema-search.yml
+ansible-playbook -i docs-2020, provision/letsencrypt.yml
+```
+
+### /etc/mackerel-agent/mackerel-agent.conf
+
+Install `mackerel-check-plugins` too.
+
+Add/Modified:
+
+```
+[filesystems]
+ignore = "/dev/loop*"
+
+[plugin.checks.fileage-bc-setup-all]
+command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/bc-setup-all.updated"]
+[plugin.checks.fileage-bc-static-all]
+command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/bc-static-all.updated"]
+[plugin.checks.fileage-rdoc-static-all]
+command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/rdoc-static-all.updated"]
+[plugin.checks.fileage-update-rurema-index]
+command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/update-rurema-index.updated"]
+```
