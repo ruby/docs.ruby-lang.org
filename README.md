@@ -59,6 +59,12 @@ sudo systemctl status rdoc-static-all.service bc-setup-all.service bc-static-all
 
 ## Production Environment
 
+## Capstrano
+
+```
+cap production deploy
+```
+
 ### ansible
 
 ```
