@@ -9,7 +9,7 @@ GEM
       i18n
       rake (>= 10.0.0)
       sshkit (>= 1.9.0)
-    capistrano-bundler (1.6.0)
+    capistrano-bundler (2.0.0)
       capistrano (~> 3.1)
     concurrent-ruby (1.1.6)
     ed25519 (1.2.4)
