@@ -30,6 +30,7 @@ def create_document(version)
          "--catalog=#{CATALOG}",
          "--fs-casesensitive",
          "--canonical-base-url=https://docs.ruby-lang.org/ja/latest/",
+         "--edit-base-url=https://github.com/rurema/doctree/edit/master/",
          "--meta-robots-content=",
          "--tracking-id=UA-620926-3",
          "--quiet") or raise
