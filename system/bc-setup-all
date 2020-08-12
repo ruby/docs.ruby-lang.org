@@ -24,7 +24,7 @@ def setup_db(version)
     FileUtils.rm_rf db
     system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} init version=#{version} encoding=utf-8")
     system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} update --stdlibtree=#{REF_BASE}/api/src")
-    system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} --capi update #{REF_BASE}/capi/src/*")
+    system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} --capi update" + Dir.glob("#{REF_BASE}/capi/src/*"))
     puts "#{version} is done"
   end
 end
