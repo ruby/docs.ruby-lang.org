@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'fileutils'
+
 VERSIONS = %w[
   2.5.0
   2.6.0
@@ -14,33 +16,35 @@ BITCLUST = "#{BITCLUST_BASE}/bin/bitclust"
 BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
 
 DOC_BASE = "/var/rubydoc/doctree"
-REF_BASE = "#{DOC_BASE}/refm"
+REF_BASE = "refm" # was "#{DOC_BASE}/refm"
 
 def setup_db(version)
-  db = "#{REF_BASE}/db-#{version}"
-  `rm -rf #{db}`
-  `#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} init version=#{version} encoding=utf-8`
-  `#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} update --stdlibtree=#{REF_BASE}/api/src`
-  `#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} --capi update #{REF_BASE}/capi/src/*`
-  puts "#{version} is done"
+  Dir.chdir(DOC_BASE) do
+    db = "#{REF_BASE}/db-#{version}"
+    FileUtils.rm_rf db
+    systen(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} init version=#{version} encoding=utf-8")
+    system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} update --stdlibtree=#{REF_BASE}/api/src")
+    system(*%W"#{RUBY} -I#{BITCLUST_LIB_DIR} #{BITCLUST} -d #{db} --capi update #{REF_BASE}/capi/src/*")
+    puts "#{version} is done"
+  end
 end
 
 if !File.directory?(BITCLUST_BASE)
-  `git clone --depth 1 https://github.com/rurema/bitclust.git #{BITCLUST_BASE}`
+  system(*%W"git clone --depth 1 https://github.com/rurema/bitclust.git #{BITCLUST_BASE}")
 end
 
 if !File.directory?(DOC_BASE)
-  `git clone --depth 1 https://github.com/rurema/doctree.git #{DOC_BASE}`
+  system(*%W"git clone --depth 1 https://github.com/rurema/doctree.git #{DOC_BASE}")
 end
 
 Dir.chdir(BITCLUST_BASE) do
-  system "git fetch origin"
-  system "git reset origin/master --hard"
+  system(*%w"git fetch origin")
+  system(*%w"git reset origin/master --hard")
 end
 
 Dir.chdir(DOC_BASE) do
-  system "git fetch origin"
-  system "git reset origin/master --hard"
+  system(*%w"git fetch origin")
+  system(*%w"git reset origin/master --hard")
 end
 
 VERSIONS.reverse_each do |version|
