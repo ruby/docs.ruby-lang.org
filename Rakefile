@@ -35,16 +35,16 @@ versions.each do |version, branch_name|
 
   namespace :rdoc do
     lang_version = File.join("en", version)
-    RDoc::Task.new(lang_version) do |rdoc|
-      rdoc.title = "Documentation for Ruby #{version}"
-      rdoc.main = "README.md"
-      rdoc.rdoc_dir = version
-      rdoc.rdoc_files << source_dir
-      rdoc.options << "-U"
-      rdoc.options << "--all"
-      rdoc.options << "--root=#{source_dir}"
-      rdoc.options << "--page-dir=#{source_dir}/doc"
-      rdoc.options << "--encoding=UTF-8"
+    task lang_version do
+      sh(
+        "rdoc",
+        "--title", "Documentation for Ruby #{version}",
+        "--main", "README.md",
+        "--output", "../../public/en/#{version}",
+        "-U", "--all", "--encoding=UTF-8",
+        ".",
+        chdir: source_dir
+      )
     end
   end
   task "rdoc:#{version}" => ["update:#{version}", "compile:#{version}"]
