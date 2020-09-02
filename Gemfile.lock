@@ -11,7 +11,7 @@ GEM
       sshkit (>= 1.9.0)
     capistrano-bundler (2.0.1)
       capistrano (~> 3.1)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     ed25519 (1.2.4)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
