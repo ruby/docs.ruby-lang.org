@@ -13,7 +13,7 @@ Dir.chdir(File.join(__dir__, '..'))
 
 def create_document(version)
   system("bundle", "exec", "rake", "update:#{version}") or raise
-  system("rm", "-rf", "en/#{version}") or raise
+  system("rm", "-rf", version) or raise
   system("bundle", "exec", "rake", "rdoc:en/#{version}") or raise
   system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
   system("rm", "-rf", version) or raise

@@ -40,7 +40,7 @@ versions.each do |version, branch_name|
         "rdoc",
         "--title", "Documentation for Ruby #{version}",
         "--main", "README.md",
-        "--output", "../../public/en/#{version}",
+        "--output", "#{Dir.pwd}/#{version}",
         "-U", "--all", "--encoding=UTF-8",
         ".",
         chdir: source_dir
