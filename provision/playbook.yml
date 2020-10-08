@@ -85,6 +85,7 @@
       src: 'systemd/{{ item }}'
     with_items:
     - 'prepend-snap-path'
+    - 'env-clear-before-replace.rb'
     - 'update-docs-en.timer'
     - 'rdoc-static-all.service'
     - 'update-docs-ja.timer'

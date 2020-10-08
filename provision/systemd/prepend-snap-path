@@ -1,2 +1,3 @@
 PATH=/snap/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DEBIAN_DISABLE_RUBYGEMS_INTEGRATION=true
+RUBYOPT=-r/etc/systemd/system/env-clear-before-replace.rb
