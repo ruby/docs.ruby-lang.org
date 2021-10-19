@@ -5,6 +5,9 @@
   vars:
     ansible_python_interpreter: '/usr/bin/python'
   tasks:
+  - name: 'Setup groonga-apt-source' # https://groonga.org/ja/docs/install/debian.html
+    apt:
+      deb: 'https://packages.groonga.org/debian/groonga-apt-source-latest-buster.deb'
   - name: 'Setup packages'
     apt:
       name:
