@@ -2,7 +2,8 @@ require 'rdoc/task'
 
 versions = {
   "master" => "master",
-  "3.0.0" => "ruby_3_0",
+  "3.1" => "ruby_3_1",
+  "3.0" => "ruby_3_0",
   "2.7.0" => "ruby_2_7",
   "2.6.0" => "ruby_2_6",
   "2.5.0" => "ruby_2_5",
