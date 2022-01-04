@@ -13,6 +13,7 @@ DOC_ROOT = ENV.fetch('DOC_ROOT', "/var/www/docs.ruby-lang.org/shared/public/en")
 Dir.chdir(File.join(__dir__, '..'))
 
 def create_document(version)
+  system("bundle", "install") or raise
   system("bundle", "exec", "rake", "update:#{version}") or raise
   system("rm", "-rf", version) or raise
   system("bundle", "exec", "rake", "rdoc:en/#{version}") or raise
