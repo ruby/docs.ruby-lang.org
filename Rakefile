@@ -30,7 +30,7 @@ versions.each do |version, branch_name|
   desc "Compile source for #{version}"
   task "compile:#{version}" => source_dir do
     Dir.chdir source_dir do
-      sh "make clean" if File.exists?("Makefile")
+      sh "make clean" if File.exist?("Makefile")
       sh "autoconf && ./configure && make"
     end
   end
