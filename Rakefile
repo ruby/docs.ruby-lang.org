@@ -13,7 +13,7 @@ versions.each do |version, branch_name|
   source_dir = "sources/#{version}"
 
   directory source_dir do
-    sh "git clone --depth=1 --branch=#{branch_name} git://github.com/ruby/ruby.git #{source_dir}"
+    sh "git clone --depth=1 --branch=#{branch_name} https://github.com/ruby/ruby #{source_dir}"
   end
 
   desc "Checks out source for #{version}"
