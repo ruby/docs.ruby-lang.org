@@ -32,7 +32,7 @@
       dest: '/var/rubydoc/rurema-search/shared/document.yaml'
       content: |
         base_url:
-          http://docs.ruby-lang.org/ja/
+          https://docs.ruby-lang.org/ja/
         remove_dot_from_version:
           false
         tracking_id:
