@@ -37,6 +37,3 @@ DEPENDENCIES
   capistrano-bundler
   ed25519
   rdoc (>= 6.0.0.beta2)
-
-BUNDLED WITH
-   2.3.3
