@@ -39,12 +39,10 @@ versions.each do |version, branch_name|
     lang_version = File.join("en", version)
     task lang_version do
       sh(
-        "rdoc",
-        "--title", "Documentation for Ruby #{version}",
-        "--main", "README.md",
-        "--output", "#{Dir.pwd}/#{version}",
-        "-U", "--all", "--encoding=UTF-8",
-        ".",
+        "make", "html",
+        "RDOCOPTS=--title=\"Documentation for Ruby #{version}\"" \
+        "--main=README.md",
+        "HTMLOUT=#{Dir.pwd}/#{version}",
         chdir: source_dir
       )
     end
