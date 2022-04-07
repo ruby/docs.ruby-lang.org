@@ -31,7 +31,7 @@ versions.each do |version, branch_name|
   task "compile:#{version}" => source_dir do
     Dir.chdir source_dir do
       sh "make clean" if File.exist?("Makefile")
-      sh "autoconf && ./configure && make"
+      sh "autoconf && ./configure --disable-install-doc && make"
     end
   end
 
