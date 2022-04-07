@@ -37,7 +37,7 @@ versions.each do |version, branch_name|
 
   namespace :rdoc do
     lang_version = File.join("en", version)
-    task lang_version do
+    task lang_version => "compile:#{version}" do
       sh(
         "make", "html",
         "RDOCOPTS=--title=\"Documentation for Ruby #{version}\"" \
