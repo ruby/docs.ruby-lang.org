@@ -29,8 +29,8 @@ versions.each do |version, branch_name|
   desc "Compile source for #{version}"
   task "compile:#{version}" => source_dir do
     Dir.chdir source_dir do
-      sh "make clean" if File.exist?("Makefile")
-      sh "autoconf && ./configure --disable-install-doc && make"
+      sh "autoconf && ./configure --disable-install-doc" unless File.exist?("Makefile")
+      sh "make -j2"
     end
   end
 
