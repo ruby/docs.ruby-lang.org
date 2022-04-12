@@ -8,6 +8,12 @@ versions = {
   "2.6.0" => "ruby_2_6",
 }
 
+def sh_with_unbundled_env(...)
+  Bundler.with_unbundled_env do
+    sh(...)
+  end
+end
+
 versions.each do |version, branch_name|
   source_dir = "sources/#{version}"
 
@@ -30,14 +36,14 @@ versions.each do |version, branch_name|
   task "compile:#{version}" => source_dir do
     Dir.chdir source_dir do
       sh "autoconf && ./configure --disable-install-doc" unless File.exist?("Makefile")
-      sh "make -j2"
+      sh_with_unbundled_env "make -j2"
     end
   end
 
   namespace :rdoc do
     lang_version = File.join("en", version)
     task lang_version => "compile:#{version}" do
-      sh(
+      sh_with_unbundled_env(
         "make", "html",
         "RDOCOPTS=--title=\"Documentation for Ruby #{version}\"" \
         "--main=README.md",
