@@ -75,6 +75,10 @@
               return 301 https://docs.ruby-lang.org/en/master$1;
             }
 
+            location ~ ^/en/([^/]+)/doc/(.*) {
+              return 301 https://docs.ruby-lang.org/en/$1/$2;
+            }
+
             # 2.8.0 was renamed to 3.0.0
             location ~ ^/(en|ja)/2\.8\.0(.*) {
               return 301 https://docs.ruby-lang.org/$1/3.0$2;
