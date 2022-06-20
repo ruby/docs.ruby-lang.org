@@ -75,6 +75,7 @@
               return 301 https://docs.ruby-lang.org/en/master$1;
             }
 
+            # https://github.com/ruby/docs.ruby-lang.org/issues/130
             location ~ ^/en/([^/]+)/doc/(.*) {
               return 301 https://docs.ruby-lang.org/en/$1/$2;
             }
