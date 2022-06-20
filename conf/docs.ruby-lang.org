@@ -37,7 +37,6 @@
 
         server_name docs.ruby-lang.org docs-origin.ruby-lang.org;
 
-        ssl on;
         ssl_certificate /etc/letsencrypt/live/docs-origin.ruby-lang.org/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/docs-origin.ruby-lang.org/privkey.pem;
         ssl_session_timeout 1d;
@@ -139,7 +138,6 @@
 
         server_name doc.ruby-lang.org;
 
-        ssl on;
         ssl_certificate /etc/letsencrypt/live/doc.ruby-lang.org/fullchain.pem;
         ssl_certificate_key /etc/letsencrypt/live/doc.ruby-lang.org/privkey.pem;
         ssl_session_timeout 1d;
