@@ -18,15 +18,15 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (7.0.1)
-    psych (4.0.3)
+    psych (5.0.0)
       stringio
     rake (13.0.6)
-    rdoc (6.4.0)
+    rdoc (6.5.0)
       psych (>= 4.0.0)
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stringio (3.0.1)
+    stringio (3.0.2)
 
 PLATFORMS
   ruby
