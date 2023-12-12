@@ -21,12 +21,12 @@ GEM
     psych (5.1.1.1)
       stringio
     rake (13.0.6)
-    rdoc (6.6.0)
+    rdoc (6.6.1)
       psych (>= 4.0.0)
     sshkit (1.21.4)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stringio (3.0.8)
+    stringio (3.1.0)
 
 PLATFORMS
   ruby
