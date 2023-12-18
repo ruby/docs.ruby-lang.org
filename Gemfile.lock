@@ -21,7 +21,7 @@ GEM
     psych (5.1.1.1)
       stringio
     rake (13.0.6)
-    rdoc (6.6.1)
+    rdoc (6.6.2)
       psych (>= 4.0.0)
     sshkit (1.21.4)
       net-scp (>= 1.1.2)
