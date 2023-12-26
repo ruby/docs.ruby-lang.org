@@ -2,10 +2,10 @@ require 'rdoc/task'
 
 versions = {
   "master" => "master",
+  "3.3" => "ruby_3_3",
   "3.2" => "ruby_3_2",
   "3.1" => "ruby_3_1",
   "3.0" => "ruby_3_0",
-  "2.7.0" => "ruby_2_7",
 }
 
 def sh_with_unbundled_env(...)
