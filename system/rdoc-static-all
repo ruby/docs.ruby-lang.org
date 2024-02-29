@@ -16,7 +16,7 @@ def download_document(version)
   system("rm", "-rf", version, "ruby-docs-en-#{version}.tar.xz") or raise
   system("curl", "-sSLO", "https://cache.ruby-lang.org/pub/ruby/doc/ruby-docs-en-#{version}.tar.xz") or raise
   system("ls", "-l", "ruby-docs-en-#{version}.tar.xz")
-  system("tar", "xf", "https://cache.ruby-lang.org/pub/ruby/doc/ruby-docs-en-#{version}.tar.xz") or raise
+  system("tar", "xf", "ruby-docs-en-#{version}.tar.xz") or raise
   system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
   system("rm", "-rf", version) or raise
   system('./system/fastly-purge-key', '--soft', "en/#{version}")
