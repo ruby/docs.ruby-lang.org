@@ -3,7 +3,7 @@ GEM
   specs:
     airbrussh (1.5.1)
       sshkit (>= 1.6.1, != 1.7.0)
-    bcrypt_pbkdf (1.1.0)
+    bcrypt_pbkdf (1.1.1)
     capistrano (3.18.1)
       airbrussh (>= 1.0.0)
       i18n
