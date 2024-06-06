@@ -40,7 +40,6 @@ if !File.directory?(DOC_BASE)
   system(*%W"git clone --depth 1 https://github.com/rurema/doctree.git #{DOC_BASE}")
 end
 
-
 if !File.directory?(GENERATED_DOCUMENTS_BASE)
   system(*%W"git clone --depth 1 https://github.com/rurema/generated-documents.git #{GENERATED_DOCUMENTS_BASE}")
 end
@@ -52,7 +51,7 @@ end
 
 Dir.glob("#{GENERATED_DOCUMENTS_BASE}/db/db-*") do |db|
   src = db
-  dst = "#{DOC_BASE}/"#{REF_BASE}/#{File.basename(db)}"
+  dst = "#{DOC_BASE}/#{REF_BASE}/#{File.basename(db)}"
   FileUtils.rm_rf(dst) if File.directory?(dst)
   system(*%w"ln -snf #{src} #{dst}")
 end
