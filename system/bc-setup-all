@@ -53,7 +53,7 @@ Dir.glob("#{GENERATED_DOCUMENTS_BASE}/db/db-*") do |db|
   src = db
   dst = "#{DOC_BASE}/#{REF_BASE}/#{File.basename(db)}"
   FileUtils.rm_rf(dst) if File.directory?(dst)
-  system(*%w"ln -snf #{src} #{dst}")
+  system(*%W"ln -snf #{src} #{dst}")
 end
 
 exit
