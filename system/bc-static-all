@@ -21,6 +21,14 @@ REF_BASE = "/var/rubydoc/doctree/refm"
 
 DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/public/ja"
 
+GENERATED_DOCUMENTS_BASE = "/var/rubydoc/generated-documents"
+
+Dir.glob("#{GENERATED_DOCUMENTS_BASE}/html/ja/*") do |version|
+  system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
+end
+
+exit
+
 def create_document(version)
   system(RUBY, "-I#{BITCLUST_LIB_DIR}",
          BITCLUST,

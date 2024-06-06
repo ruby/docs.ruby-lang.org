@@ -19,6 +19,8 @@ BITCLUST_LIB_DIR = "#{BITCLUST_BASE}/lib"
 DOC_BASE = "/var/rubydoc/doctree"
 REF_BASE = "refm" # was "#{DOC_BASE}/refm"
 
+GENERATED_DOCUMENTS_BASE = "/var/rubydoc/generated-documents"
+
 def setup_db(version)
   Dir.chdir(DOC_BASE) do
     db = "#{REF_BASE}/db-#{version}"
@@ -37,6 +39,25 @@ end
 if !File.directory?(DOC_BASE)
   system(*%W"git clone --depth 1 https://github.com/rurema/doctree.git #{DOC_BASE}")
 end
+
+
+if !File.directory?(GENERATED_DOCUMENTS_BASE)
+  system(*%W"git clone --depth 1 https://github.com/rurema/generated-documents.git #{GENERATED_DOCUMENTS_BASE}")
+end
+
+Dir.chdir(GENERATED_DOCUMENTS_BASE) do
+  system(*%w"git fetch origin")
+  system(*%w"git reset origin/main --hard")
+end
+
+Dir.glob("#{GENERATED_DOCUMENTS_BASE}/db/db-*") do |db|
+  src = db
+  dst = "#{DOC_BASE}/"#{REF_BASE}/#{File.basename(db)}"
+  FileUtils.rm_rf(dst) if File.directory?(dst)
+  system(*%w"ln -snf #{src} #{dst}")
+end
+
+exit
 
 Dir.chdir(BITCLUST_BASE) do
   system(*%w"git fetch origin")

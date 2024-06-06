@@ -2,7 +2,7 @@
 Description=Update docs.ruby-lang.org/ja/
 
 [Timer]
-OnCalendar=*-*-* 0:15
+OnCalendar=*-*-* 20:15
 Persistent=true
 Unit=bc-setup-all.service
 
