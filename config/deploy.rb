@@ -12,4 +12,4 @@ versions = %w[
   3.0 3.1 3.2 3.3
   master
 ]
-set :linked_dirs, ["sources", "public/ja/latest"] + versions.map{|v| ["public/en/#{v}", "public/ja/#{v}"]}.flatten
+set :linked_dirs, ["sources", "public/ja/3.4", "public/ja/latest"] + versions.map{|v| ["public/en/#{v}", "public/ja/#{v}"]}.flatten
