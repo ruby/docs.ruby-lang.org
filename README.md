@@ -33,11 +33,16 @@
 
 ## Production Environment
 
-## Capstrano
+### Capstrano
 
 ```
 cap production deploy
 ```
+
+### /etc/nginx/sites-available/docs.ruby-lang.org
+
+Manual sync with `conf/docs.ruby-lang.org`.
+Because ansible playbooks are outdated.
 
 ### /etc/mackerel-agent/mackerel-agent.conf
 
