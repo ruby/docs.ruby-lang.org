@@ -22,10 +22,10 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.3.0)
     ostruct (0.6.1)
-    psych (5.1.2)
+    psych (5.2.0)
       stringio
     rake (13.2.1)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     sshkit (1.23.2)
       base64
@@ -33,7 +33,7 @@ GEM
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
       ostruct
-    stringio (3.1.0)
+    stringio (3.1.2)
 
 PLATFORMS
   ruby
