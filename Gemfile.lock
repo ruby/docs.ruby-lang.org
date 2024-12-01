@@ -34,6 +34,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     stringio (3.1.2)
+    webrick (1.8.2)
 
 PLATFORMS
   ruby
@@ -44,3 +45,7 @@ DEPENDENCIES
   capistrano-bundler
   ed25519
   rdoc (>= 6.0.0.beta2)
+  webrick
+
+BUNDLED WITH
+   2.5.17

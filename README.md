@@ -31,6 +31,15 @@
 * https://github.com/ruby/rurema-search
 * https://github.com/rurema/generated-documents
 
+## Previewing `public` directory locally
+
+1. Install dependencies: `bundle install`
+2. Run:
+  ```
+  bin/server
+  ```
+3. Open http://localhost:8000/
+
 ## Production Environment
 
 ### Capstrano
