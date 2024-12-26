@@ -9,7 +9,7 @@ set :default_env, {
 versions = %w[
   1.8.7 1.9.3
   2.0.0 2.1.0 2.2.0 2.3.0 2.4.0 2.5.0 2.6.0 2.7.0
-  3.0 3.1 3.2 3.3
+  3.0 3.1 3.2 3.3 3.4
   master
 ]
-set :linked_dirs, ["sources", "public/ja/3.4", "public/ja/latest"] + versions.map{|v| ["public/en/#{v}", "public/ja/#{v}"]}.flatten
+set :linked_dirs, ["sources", "public/ja/3.5", "public/ja/latest"] + versions.map{|v| ["public/en/#{v}", "public/ja/#{v}"]}.flatten
