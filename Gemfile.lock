@@ -34,7 +34,7 @@ GEM
       net-ssh (>= 2.8.0)
       ostruct
     stringio (3.1.2)
-    webrick (1.8.2)
+    webrick (1.9.1)
 
 PLATFORMS
   ruby
