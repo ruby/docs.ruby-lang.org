@@ -23,11 +23,11 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-ssh (7.3.0)
     ostruct (0.6.1)
-    psych (5.2.2)
+    psych (5.2.3)
       date
       stringio
     rake (13.2.1)
-    rdoc (6.10.0)
+    rdoc (6.11.0)
       psych (>= 4.0.0)
     sshkit (1.23.2)
       base64
