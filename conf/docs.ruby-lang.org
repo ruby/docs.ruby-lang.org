@@ -123,7 +123,7 @@
         server_name  localhost;
         root /var/rubydoc/rurema-search/current/public;
         passenger_enabled on;
-        passenger_max_requests 500000;
+        passenger_max_requests 50000;
 
         # add_header Cache-Control "private";
         add_header Cache-Control "public, max-age=3600, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=60";
