@@ -2,6 +2,8 @@
     #limit_req_zone $binary_remote_addr zone=search_limit:10m rate=1r/s;
     limit_req_zone global zone=search_limit:10m rate=2r/s;
 
+    passenger_max_pool_size 2;
+
     server {
         listen 80;
         server_name doc.ruby-lang.org;
