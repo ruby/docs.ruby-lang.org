@@ -70,5 +70,5 @@ command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/do
 [plugin.checks.fileage-rdoc-static-all]
 command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/rdoc-static-all.updated"]
 [plugin.checks.fileage-update-rurema-index]
-command = ["check-file-age", "-i", "-w", "90000", "-c", "172800", "-f", "/run/docs.ruby-lang.org/update-rurema-index.updated"]
+command = ["check-file-age", "-i", "-w", "90060", "-c", "172800", "-f", "/run/docs.ruby-lang.org/update-rurema-index.updated"]
 ```
