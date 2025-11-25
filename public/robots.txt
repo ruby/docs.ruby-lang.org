@@ -1,3 +1,2 @@
 User-Agent: *
-Disallow: /ja/search/*
-Allow: /
+Disallow: /ja/search/
