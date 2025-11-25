@@ -113,6 +113,10 @@
             add_header Surrogate-Key "doxygen-latest-html";
         }
 
+        location ~ ^/ja/search/.*/query:.*/query:.*/query:.*/query:.*/query:.*/ {
+            return 414;
+        }
+
         location /ja/search {
             limit_req zone=search_limit burst=1 nodelay;
             limit_req_status 429;
