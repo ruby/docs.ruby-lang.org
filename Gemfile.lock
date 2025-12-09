@@ -4,7 +4,7 @@ GEM
     airbrussh (1.6.0)
       sshkit (>= 1.6.1, != 1.7.0)
     base64 (0.3.0)
-    bcrypt_pbkdf (1.1.1)
+    bcrypt_pbkdf (1.1.2)
     capistrano (3.19.2)
       airbrussh (>= 1.0.0)
       i18n
