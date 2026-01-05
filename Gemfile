@@ -5,7 +5,7 @@ gem 'capistrano'
 gem 'capistrano-bundler'
 
 # ed25519
-gem 'ed25519', '< 1.4.0'
+gem 'ed25519', '< 1.5.0'
 gem 'bcrypt_pbkdf'
 
 gem 'erb', '< 5'
