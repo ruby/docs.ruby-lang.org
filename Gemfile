@@ -8,7 +8,7 @@ gem 'capistrano-bundler'
 gem 'ed25519', '< 1.5.0'
 gem 'bcrypt_pbkdf'
 
-gem 'erb', '< 5'
+gem 'erb', '< 7'
 
 # For previewing public directory locally with `bin/server`
 gem 'webrick'
