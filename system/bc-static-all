@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 
 VERSIONS = %w[
-  3.0
-  3.1
-  3.2
-  3.3
-  3.4
-  4.0
 ]
 
 RUBY = "ruby"
@@ -24,11 +18,15 @@ DOC_ROOT = "/var/www/docs.ruby-lang.org/shared/public/ja"
 
 GENERATED_DOCUMENTS_BASE = "/var/rubydoc/generated-documents"
 
-Dir.glob("#{GENERATED_DOCUMENTS_BASE}/html/ja/*") do |version|
-  system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
+Dir.glob("#{GENERATED_DOCUMENTS_BASE}/html/ja/*") do |version_path|
+  version = File.basename(version_path)
+  next unless /\A\d/.match?(version)
+  VERSIONS.push version
+  system("rsync", "-acvi", "--no-times", "--delete", version_path, DOC_ROOT) or raise
+  system('./system/fastly-purge-key', '--soft', "ja/#{version}")
 end
 
-exit
+=begin
 
 def create_document(version)
   system(RUBY, "-I#{BITCLUST_LIB_DIR}",
@@ -53,6 +51,8 @@ end
 VERSIONS.reverse_each do |version|
   create_document(version)
 end
+
+=end
 
 Dir.chdir(DOC_ROOT) do
   # latest and master should be symlink
