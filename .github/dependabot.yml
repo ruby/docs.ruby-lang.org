@@ -6,3 +6,6 @@ updates:
     interval: weekly
     time: '20:00'
   open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: "erb"
+    update-types: ["version-update:semver-major"]
