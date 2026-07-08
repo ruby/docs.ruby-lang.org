@@ -20,8 +20,10 @@ GENERATED_DOCUMENTS_BASE = "/var/rubydoc/generated-documents"
 
 Dir.glob("#{GENERATED_DOCUMENTS_BASE}/html/ja/*") do |version_path|
   version = File.basename(version_path)
-  next unless /\A\d/.match?(version)
-  VERSIONS.push version
+  # "search" は全バージョン対応の静的検索ページ（rurema-search 置き換え）。
+  # latest/master の symlink 計算には含めない
+  next unless /\A\d/.match?(version) || version == "search"
+  VERSIONS.push version if /\A\d/.match?(version)
   system("rsync", "-acvi", "--no-times", "--delete", version_path, DOC_ROOT) or raise
   system('./system/fastly-purge-key', '--soft', "ja/#{version}")
 end
