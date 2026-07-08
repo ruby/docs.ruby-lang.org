@@ -94,6 +94,21 @@
               return 301 https://docs.ruby-lang.org/$1/3.0$2;
             }
 
+            # 旧 rurema-search の /ja/search/query:語/ 形式は ?q= に読み替えて
+            # リダイレクトする。version: 等の他のファセットは落とす（静的
+            # 検索ページは全バージョン横断）。$request_uri ベースのキャプチャ
+            # なので percent-encoding は保たれる。
+            # 注意: この location は prefix の location / にネストし、下の
+            # ^/(en|ja)/(.+?)/ より前に置く必要がある。マッチした prefix
+            # location 内のネスト regex が server 直下の regex location より
+            # 先に評価されるため、server 直下に置くと到達しない
+            location ~ ^/ja/search/.*query: {
+              if ($request_uri ~ "^/ja/search/(?:[^?]*?/)??query:([^/?]+)") {
+                return 301 /ja/search/?q=$1;
+              }
+              return 301 /ja/search/;
+            }
+
             location ~ ^/(en|ja)/(.+?)/ {
               add_header Cache-Control "public, max-age=43200, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=604800";
               add_header Surrogate-Key "docs $1 $2 $1/$2";
@@ -110,17 +125,8 @@
         # /ja/search/ は rurema-search（サーバアプリ）から全バージョン対応の
         # 静的検索ページに置き換えた（rurema/generated-documents の
         # html/ja/search を system/bc-static-all が rsync し、他の版と同じく
-        # location / の root から配信される）。
-        # 旧 rurema-search の /ja/search/query:語/ 形式は ?q= に読み替えて
-        # リダイレクトする。version: 等の他のファセットは落とす（静的ページは
-        # 全バージョン横断）。$request_uri ベースのキャプチャなので
-        # percent-encoding は保たれる
-        location ~ ^/ja/search/.*query: {
-            if ($request_uri ~ "^/ja/search/(?:[^?]*?/)??query:([^/?]+)") {
-                return 301 /ja/search/?q=$1;
-            }
-            return 301 /ja/search/;
-        }
+        # location / の root から配信される。query: URL の互換リダイレクトは
+        # location / 内のネスト location を参照）
 
         error_page   500 502 503 504  /50x.html;
         location = /50x.html {
