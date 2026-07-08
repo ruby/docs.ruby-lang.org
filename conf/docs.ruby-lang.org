@@ -1,9 +1,3 @@
-    # define limit zone
-    #limit_req_zone $binary_remote_addr zone=search_limit:10m rate=1r/s;
-    limit_req_zone global zone=search_limit:10m rate=2r/s;
-
-    passenger_max_pool_size 2;
-
     server {
         listen 80;
         server_name doc.ruby-lang.org;
@@ -113,39 +107,25 @@
             add_header Surrogate-Key "doxygen-latest-html";
         }
 
-        location ~ ^/ja/search/.*/query:.*/query:.*/query:.*/query:.*/query:.*/ {
-            return 414;
-        }
-
-        location /ja/search {
-            limit_req zone=search_limit burst=1 nodelay;
-            limit_req_status 429;
-            proxy_pass http://localhost:9292;
-        }
-
-        location ~ /ja/search/(css|javascripts) {
-          rewrite ^/ja/search/(.+)$ /$1 break;
-          root /var/rubydoc/rurema-search/current/public;
-          add_header Cache-Control "public, max-age=43200, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=604800";
-          add_header Surrogate-Key "rurema-search-assets";
+        # /ja/search/ は rurema-search（サーバアプリ）から全バージョン対応の
+        # 静的検索ページに置き換えた（rurema/generated-documents の
+        # html/ja/search を system/bc-static-all が rsync し、他の版と同じく
+        # location / の root から配信される）。
+        # 旧 rurema-search の /ja/search/query:語/ 形式は ?q= に読み替えて
+        # リダイレクトする。version: 等の他のファセットは落とす（静的ページは
+        # 全バージョン横断）。$request_uri ベースのキャプチャなので
+        # percent-encoding は保たれる
+        location ~ ^/ja/search/.*query: {
+            if ($request_uri ~ "^/ja/search/(?:[^?]*?/)??query:([^/?]+)") {
+                return 301 /ja/search/?q=$1;
+            }
+            return 301 /ja/search/;
         }
 
         error_page   500 502 503 504  /50x.html;
         location = /50x.html {
             root   /usr/share/nginx/html;
         }
-    }
-
-    server {
-        listen       9292;
-        server_name  localhost;
-        root /var/rubydoc/rurema-search/current/public;
-        passenger_enabled on;
-        passenger_max_requests 50000;
-
-        # add_header Cache-Control "private";
-        add_header Cache-Control "public, max-age=3600, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=60";
-        add_header Surrogate-Key "rurema-search-app";
     }
 
     server {
