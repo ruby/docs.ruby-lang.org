@@ -115,6 +115,14 @@
     - 'update-docs-en.timer'
     - 'update-docs-ja.timer'
     - 'bc-static-all.path'
+    notify: 'systemd daemon-reload'
+
+  - name: 'Disable systemd units'
+    systemd:
+      name: '{{ item }}'
+      state: stopped
+      enabled: no
+    with_items:
     - 'update-rurema-index.path'
     notify: 'systemd daemon-reload'
 
