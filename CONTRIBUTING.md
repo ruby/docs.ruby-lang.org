@@ -21,6 +21,13 @@ The English Ruby documentation is automatically generated and updated through a 
 
 ## How docs.ruby-lang.org/ja Works
 
+This repository does not contain the Japanese documentation content, and pull requests to `/ja` pages should not be opened here. The Japanese Ruby documentation (Rurema) has its own source repositories:
+
+- [rurema/doctree](https://github.com/rurema/doctree) — the source documents. This is where to send fixes for the content of `/ja` pages (each page also links to its source file for editing).
+- [rurema/bitclust](https://github.com/rurema/bitclust) — the tool that parses and renders the documentation.
+
+This repository is only responsible for `en/` content and the deployment infrastructure that publishes both `en/` and `ja/` to docs.ruby-lang.org, described below.
+
 The Japanese Ruby documentation (Rurema) is automatically generated and updated through a pipeline involving GitHub repositories, systemd services, and BitClust tool. Here's how it all comes together:
 
 1. **Documentation Generation and Upload**
