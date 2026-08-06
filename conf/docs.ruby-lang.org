@@ -109,6 +109,18 @@
               return 301 /ja/search/;
             }
 
+            # 生成された Markdown 版（/ja/latest/class/Array.md 等）を
+            # text/markdown で配信する（.md は mime.types に無く、既定では
+            # application/octet-stream になる。types ブロックは継承テーブルを
+            # 丸ごと置き換えるため、.md しかマッチしないこの location でのみ
+            # 設定する）。下の ^/(en|ja)/(.+?)/ より前に置く必要がある
+            location ~ ^/(en|ja)/(.+?)/.*\.md$ {
+              types { }
+              default_type "text/markdown; charset=utf-8";
+              add_header Cache-Control "public, max-age=43200, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=604800";
+              add_header Surrogate-Key "docs $1 $2 $1/$2";
+            }
+
             location ~ ^/(en|ja)/(.+?)/ {
               add_header Cache-Control "public, max-age=43200, s-maxage=172800, stale-while-revalidate=86400, stale-if-error=604800";
               add_header Surrogate-Key "docs $1 $2 $1/$2";
