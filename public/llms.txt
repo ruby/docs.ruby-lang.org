@@ -27,10 +27,12 @@
 - [Version index](https://docs.ruby-lang.org/en/)
 - [Ruby 4.0 (latest stable)](https://docs.ruby-lang.org/en/4.0/)
 - [Ruby master](https://docs.ruby-lang.org/en/master/)
+- [Sitemap](https://docs.ruby-lang.org/en/sitemap.xml)
 
 ## C API Documentation
 
 - [C API of Ruby master (Doxygen)](https://docs.ruby-lang.org/capi/en/master/)
+- [Sitemap](https://docs.ruby-lang.org/capi/en/master/sitemap.xml)
 
 ## Optional
 
