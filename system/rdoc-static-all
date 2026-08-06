@@ -12,13 +12,33 @@ VERSIONS = %w[
 
 DOC_ROOT = ENV.fetch('DOC_ROOT', "/var/www/docs.ruby-lang.org/shared/public/en")
 
+SITEMAP_BASE_URL = "https://docs.ruby-lang.org/en/"
+
 Dir.chdir(File.join(__dir__, '..'))
+
+def escape_xml(str)
+  str.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
+end
+
+def create_sitemap(version)
+  paths = Dir.glob("#{version}/**/*.html").sort
+  File.open("#{version}/sitemap.xml", "w") do |f|
+    f.puts %(<?xml version="1.0" encoding="UTF-8"?>)
+    f.puts %(<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">)
+    paths.each do |path|
+      f.puts "<url><loc>#{escape_xml("#{SITEMAP_BASE_URL}#{path}")}</loc></url>"
+    end
+    f.puts %(</urlset>)
+  end
+  puts "#{version}/sitemap.xml: #{paths.size} URLs"
+end
 
 def download_document(version)
   system("rm", "-rf", version, "ruby-docs-en-#{version}.tar.xz") or raise
   system("curl", "-sSLO", "https://cache.ruby-lang.org/pub/ruby/doc/ruby-docs-en-#{version}.tar.xz") or raise
   system("ls", "-l", "ruby-docs-en-#{version}.tar.xz")
   system("tar", "xf", "ruby-docs-en-#{version}.tar.xz") or raise
+  create_sitemap(version)
   system("rsync", "-acvi", "--no-times", "--delete", version, DOC_ROOT) or raise
   system("rm", "-rf", version) or raise
   system('./system/fastly-purge-key', '--soft', "en/#{version}")
