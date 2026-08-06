@@ -4,3 +4,4 @@ Disallow:
 Sitemap: https://docs.ruby-lang.org/sitemap.xml
 Sitemap: https://docs.ruby-lang.org/ja/latest/sitemap.xml
 Sitemap: https://docs.ruby-lang.org/en/sitemap.xml
+Sitemap: https://docs.ruby-lang.org/capi/en/master/sitemap.xml
