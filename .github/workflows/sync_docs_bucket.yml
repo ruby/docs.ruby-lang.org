@@ -1,10 +1,12 @@
-# public/ 直下のサイト共通ファイル(index.html・robots.txt・sitemap.xml・
-# llms.txt・privacy.html・favicon.ico)を docs.ruby-lang.org の S3 バケットの
-# ルートへ同期する。
+# public/ のサイト共通ファイルを docs.ruby-lang.org の S3 バケットへ
+# 同期する。ルート直下(index.html・robots.txt・sitemap.xml・llms.txt・
+# privacy.html・favicon.ico・assets/)に加えて、ja/index.html・
+# en/index.html・en/sitemap.xml(各言語のトップ)も**このリポジトリだけが
+# ソース**なのでここが同期する。
 #
-# ja/ と en/ の各 prefix は生成リポジトリ側の sync が所有する
-# (ja= rurema/generated-documents、en/capi= ruby/actions 系)。public/ja・
-# public/en は旧 nginx docroot 時代の名残なのでここでは同期しない。
+# ja/ と en/ のバージョン配下は生成リポジトリ側の sync が所有する
+# (ja= rurema/generated-documents。あちらはトップの index.html を
+# --exclude して、この同期対象を消さないようにしている)。
 # ルート prefix への sync なので --delete は絶対に付けないこと
 # (バケット全体の他 prefix を削除してしまう)。
 #
@@ -40,8 +42,8 @@ jobs:
           aws-region: us-east-1
 
       # ファイル数が少ないので mtime の差分最適化はせず毎回全件置く
-      - name: Sync root files to s3://docs.r-l.o/
-        run: aws s3 sync public s3://docs.r-l.o --exclude "ja/*" --exclude "en/*" --no-progress
+      - name: Sync public files to s3://docs.r-l.o/
+        run: aws s3 sync public s3://docs.r-l.o --no-progress
 
       # secrets コンテキストは if: 式では参照できないため、未設定時の
       # スキップはシェル側で判定する(rurema/generated-documents と同じ形)
