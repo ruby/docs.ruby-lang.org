@@ -1,0 +1,58 @@
+# public/ 直下のサイト共通ファイル(index.html・robots.txt・sitemap.xml・
+# llms.txt・privacy.html・favicon.ico)を docs.ruby-lang.org の S3 バケットの
+# ルートへ同期する。
+#
+# ja/ と en/ の各 prefix は生成リポジトリ側の sync が所有する
+# (ja= rurema/generated-documents、en/capi= ruby/actions 系)。public/ja・
+# public/en は旧 nginx docroot 時代の名残なのでここでは同期しない。
+# ルート prefix への sync なので --delete は絶対に付けないこと
+# (バケット全体の他 prefix を削除してしまう)。
+#
+# 認証は OIDC(ruby/ruby-infra-recipe cdn/iam.tf の
+# docs-sync-docs-ruby-lang-org ロール)。リポジトリ変数
+# DOCS_SYNC_ROLE_ARN が未設定の間は何もしない。
+name: sync docs bucket
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'public/**'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: ${{ vars.DOCS_SYNC_ROLE_ARN != '' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: public
+
+      - uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: ${{ vars.DOCS_SYNC_ROLE_ARN }}
+          aws-region: us-east-1
+
+      # ファイル数が少ないので mtime の差分最適化はせず毎回全件置く
+      - name: Sync root files to s3://docs.r-l.o/
+        run: aws s3 sync public s3://docs.r-l.o --exclude "ja/*" --exclude "en/*" --no-progress
+
+      # secrets コンテキストは if: 式では参照できないため、未設定時の
+      # スキップはシェル側で判定する(rurema/generated-documents と同じ形)
+      - name: Soft-purge the index surrogate key
+        run: |
+          if [ -z "${FASTLY_SERVICE_ID}" ] || [ -z "${FASTLY_PURGE_TOKEN}" ]; then
+            echo "FASTLY_SERVICE_ID / FASTLY_PURGE_TOKEN が未設定のため purge をスキップ"
+            exit 0
+          fi
+          curl -fsS -X POST "https://api.fastly.com/service/${FASTLY_SERVICE_ID}/purge/index" \
+            -H "Fastly-Key: ${FASTLY_PURGE_TOKEN}" -H "fastly-soft-purge: 1"
+        env:
+          FASTLY_SERVICE_ID: ${{ vars.FASTLY_SERVICE_ID }}
+          FASTLY_PURGE_TOKEN: ${{ secrets.FASTLY_PURGE_TOKEN }}
