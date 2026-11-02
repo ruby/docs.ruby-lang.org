@@ -51,6 +51,9 @@
   font-size: 0.9em;
   color: #555;
 }
+#notfound-exists .search-versions {
+  display: inline-block;
+}
 </style>
 <script>
 // notfound-logic: 見つからなかった URL から検索語を推測する。
@@ -93,6 +96,48 @@ function latestUrl(pathname) {
   return m ? '/ja/latest/' + m[2] : null;
 }
 
+// /ja/<バージョン>/<ページ> に分解する(ページ部分は検索索引の path と同じ表記)
+function splitPagePath(pathname) {
+  var p = pathname;
+  try { p = decodeURIComponent(p); } catch (e) {}
+  var m = p.match(/^\/ja\/([^\/]+)\/(.+)$/);
+  return m ? { version: m[1], path: m[2] } : null;
+}
+
+function compareVersions(a, b) {
+  var as = a.split('.'), bs = b.split('.');
+  for (var i = 0; i < Math.max(as.length, bs.length); i++) {
+    var d = parseInt(as[i] || '0', 10) - parseInt(bs[i] || '0', 10);
+    if (d) return d;
+  }
+  return 0;
+}
+
+// 検索索引で path が完全に一致するエントリの収録バージョン(昇順・重複なし)。
+// URL のバージョンには無くても、他のバージョンにページが残っていることがある
+function existingVersions(pathname, index) {
+  var page = splitPagePath(pathname);
+  if (!page) return [];
+  var versions = [];
+  for (var i = 0; i < index.length; i++) {
+    if (index[i].path !== page.path) continue;
+    var vs = index[i].versions || [];
+    for (var j = 0; j < vs.length; j++) {
+      if (versions.indexOf(vs[j]) < 0) versions.push(vs[j]);
+    }
+  }
+  return versions.sort(compareVersions);
+}
+
+// ページが最後に存在したバージョンの同じ URL(URL のバージョンと同じなら null)
+function existingLink(pathname, versions) {
+  var page = splitPagePath(pathname);
+  if (!page || versions.length === 0) return null;
+  var newest = versions[versions.length - 1];
+  if (newest === page.version) return null;
+  return '/ja/' + newest + '/' + page.path;
+}
+
 // 検索ページのスクリプト(後続の defer 読み込み)は ?q= を初期検索語に
 // するので、推測した名前を ?q= に入れておく。再読み込みや共有で
 // 既に ?q= があるときは、そちらを優先する
@@ -120,6 +165,7 @@ if (typeof window !== 'undefined' && window.location && window.history) {
   </div>
   <p>お探しのページは存在しません。ページの移動や削除、またはリンクの誤りの可能性があります。</p>
   <p id="notfound-where" hidden>リクエストされた URL: <code></code></p>
+  <p id="notfound-exists" hidden>この URL のページは <a href="/ja/"></a> にあります。各バージョンのページ: <span class="search-versions"></span></p>
   <p id="notfound-hint" hidden>URL から推測した「<strong></strong>」でリファレンスを検索しました。別の名前でも検索できます。</p>
   <form id="search-section" role="search" action="/ja/search/" method="get">
     <input id="search-field" name="q" type="text" autocomplete="off" spellcheck="false"
@@ -160,6 +206,31 @@ if (typeof window !== 'undefined' && window.location && window.history) {
     item.querySelector('a').href = latest;
     item.removeAttribute('hidden');
   }
+
+  // 検索索引(defer 読み込み)が揃ってから、同じ URL のページが残っている
+  // バージョンへの直リンクを出す
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof search_data === 'undefined' || !search_data.index) return;
+    var versions = existingVersions(path, search_data.index);
+    var link = existingLink(path, versions);
+    if (!link) return;
+    var page = splitPagePath(path);
+    var exists = document.getElementById('notfound-exists');
+    var a = exists.querySelector('a');
+    a.href = link;
+    a.textContent = 'Ruby ' + versions[versions.length - 1] + ' のリファレンスマニュアル';
+    var pills = exists.querySelector('span');
+    for (var i = versions.length - 1; i >= 0; i--) {
+      var pill = document.createElement('a');
+      pill.href = '/ja/' + versions[i] + '/' + page.path;
+      pill.textContent = versions[i];
+      pill.setAttribute('aria-label', 'Ruby ' + versions[i] + ' のページ');
+      pills.appendChild(pill);
+    }
+    exists.removeAttribute('hidden');
+    // 直リンクのほうが確実なので、最新版の同じ URL への案内は引っ込める
+    document.getElementById('notfound-latest').setAttribute('hidden', '');
+  });
 })();
 </script>
 </body>
